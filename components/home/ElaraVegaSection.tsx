@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { Locale, Dict } from '@/lib/i18n';
 import { useRevealGroup } from '@/hooks/useReveal';
+import Orb from '@/components/ui/Orb';
 import styles from './ElaraVegaSection.module.css';
 
 interface Props {
@@ -21,9 +22,12 @@ export default function ElaraVegaSection({ lang, d }: Props) {
     >
       {/* Atmospheric geometry */}
       <div className={styles.atmosphere} aria-hidden="true">
-        <div className={styles.atmCircle1} />
-        <div className={styles.atmCircle2} />
-        <div className={styles.atmLine} />
+        <Orb
+          hoverIntensity={0.8}
+          rotateOnHover={true}
+          hue={0}
+          backgroundColor="#111c2d" // Brand Navy
+        />
       </div>
 
       <div className={`container ${styles.inner}`}>

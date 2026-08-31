@@ -29,8 +29,8 @@ export default function TheBook({ lang, d }: Props) {
             <div className={styles.bookCover}>
               <div className={styles.bookSpine} />
               <div className={styles.bookFace}>
-                <span className={styles.bookTitleArt}>Conscious</span>
-                <span className={styles.bookTitleArt2}>Diplomacy</span>
+                <span className={styles.bookTitleArt}>{d.book.title.split(' ')[0]}</span>
+                <span className={styles.bookTitleArt2}>{d.book.title.split(' ')[1] || ''}</span>
                 <span className={styles.bookAuthor}>{d.hero.nameFirst} {d.hero.nameLast}</span>
               </div>
             </div>
@@ -39,28 +39,28 @@ export default function TheBook({ lang, d }: Props) {
 
           {/* Book content */}
           <div className={styles.content}>
-            <div className="section-label reveal">
+            <div className="section-label quiet-reveal">
               <div className="dot" />
               <span>{d.book.label}</span>
             </div>
 
             <h2
               id="book-heading"
-              className={`${styles.heading} reveal reveal-delay-1`}
+              className={`${styles.heading} quiet-reveal reveal-delay-1`}
             >
               {d.book.title}
             </h2>
 
-            <p className={`t-body ${styles.body} reveal reveal-delay-2`}>
+            <p className={`t-body ${styles.body} quiet-reveal reveal-delay-2`}>
               {d.book.body}
             </p>
 
-            <div className={`${styles.actions} reveal reveal-delay-3`}>
+            <div className={`${styles.actions} quiet-reveal reveal-delay-3`}>
               <button
                 onClick={() => setWaitlistOpen(true)}
-                className={`btn btn-ghost ${styles.buyBtn}`}
+                className={`btn ${styles.buyBtn}`}
               >
-                {d.book.ctaBuy}
+                {d.book.ctaBuy} →
               </button>
             </div>
           </div>

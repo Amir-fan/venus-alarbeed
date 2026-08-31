@@ -42,13 +42,17 @@
   width: 100%;
   max-width: 220px;
   aspect-ratio: 2 / 3;
-  transform: perspective(800px) rotateY(-12deg);
+  transform: perspective(800px) rotateY(-8deg) rotateX(1deg);
   transform-style: preserve-3d;
-  transition: transform var(--dur-md) var(--ease-silk);
 }
 
-.bookObject:hover .bookCover {
-  transform: perspective(800px) rotateY(-6deg);
+.bookObject.in-view .bookCover {
+  animation: bookSettle 1.5s var(--ease-editorial) forwards;
+}
+
+@keyframes bookSettle {
+  0% { transform: perspective(800px) rotateY(-12deg) rotateX(2deg) translateY(4px); }
+  100% { transform: perspective(800px) rotateY(-8deg) rotateX(1deg) translateY(0); }
 }
 
 .bookSpine {

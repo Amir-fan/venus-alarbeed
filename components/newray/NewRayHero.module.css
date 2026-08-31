@@ -1,0 +1,93 @@
+.hero {
+  position: relative;
+  min-height: 90svh;
+  display: flex;
+  align-items: center;
+  padding-block: var(--space-24) var(--space-20);
+  background: var(--mist);
+  color: var(--navy);
+  overflow: hidden;
+  animation: fadeInBg 2s var(--ease-editorial) forwards;
+}
+
+/* Atmospheric transition from ivory to mist */
+@keyframes fadeInBg {
+  0% { background: var(--ivory); }
+  100% { background: var(--mist); }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.labelTop {
+  margin-bottom: var(--space-16);
+}
+
+.headingWrap {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--space-12);
+  width: 100%;
+}
+
+.lineWrap {
+  display: block;
+  overflow: hidden;
+  line-height: 1.1;
+  max-width: 900px;
+}
+
+.line {
+  display: block;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+}
+
+[dir="rtl"] .line {
+  font-family: var(--font-ar);
+  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.rule {
+  width: 60%;
+  max-width: 800px;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.15);
+  margin-bottom: var(--space-16);
+  transform-origin: left;
+}
+
+[dir="rtl"] .rule {
+  transform-origin: right;
+}
+
+.bodyWrap {
+  max-width: 680px;
+  margin-left: 0;
+}
+
+[dir="rtl"] .bodyWrap {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.body {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  line-height: 1.7;
+  font-weight: 300;
+  color: var(--navy);
+  opacity: 0.7;
+}
+
+[dir="rtl"] .body {
+  font-family: var(--font-ar);
+  font-size: clamp(1.125rem, 2.5vw, 1.75rem);
+}

@@ -21,18 +21,18 @@ export default function ProgramsSection({ lang, d }: Props) {
     >
       <div className={`container ${styles.inner}`}>
         <div className={styles.header}>
-          <div className="section-label reveal">
+          <div className="section-label quiet-reveal">
             <div className="dot" />
             <span>{d.programs.label}</span>
           </div>
           <div className={styles.headerContent}>
             <h2
               id="programs-heading"
-              className={`${styles.heading} reveal reveal-delay-1`}
+              className={`${styles.heading} quiet-reveal reveal-delay-1`}
             >
               {d.programs.heading}
             </h2>
-            <p className={`t-body ${styles.body} reveal reveal-delay-2`}>
+            <p className={`t-body ${styles.body} quiet-reveal reveal-delay-2`}>
               {d.programs.body}
             </p>
           </div>
@@ -40,21 +40,23 @@ export default function ProgramsSection({ lang, d }: Props) {
 
         <div className={styles.list}>
           {d.programs.list.map((prog, i) => (
-            <div
+            <Link
+              href={`/${lang}/programs`}
               key={prog.title}
-              className={`${styles.program} reveal`}
-              style={{ transitionDelay: `${i * 80}ms` } as React.CSSProperties}
+              className={`${styles.program} quiet-reveal`}
+              style={{ transitionDelay: `${i * 100}ms` } as React.CSSProperties}
             >
-              <span className={styles.programTag}>{prog.tag}</span>
+              <span className={styles.programNum}>0{i + 1}</span>
               <span className={styles.programTitle}>{prog.title}</span>
+              <span className={styles.programTag}>{prog.tag}</span>
               <span className={styles.programArrow} aria-hidden="true">→</span>
-            </div>
+            </Link>
           ))}
         </div>
 
-        <div className={`reveal reveal-delay-4`}>
-          <Link href={`/${lang}/programs`} className={`btn btn-ghost ${styles.cta}`}>
-            {d.programs.cta}
+        <div className={`quiet-reveal reveal-delay-4`}>
+          <Link href={`/${lang}/programs`} className={`btn-text ${styles.cta}`}>
+            {d.programs.cta} →
           </Link>
         </div>
       </div>

@@ -1,14 +1,12 @@
 import { dict, type Locale } from '@/lib/i18n';
 import Hero from '@/components/home/Hero';
 import WhoIsVenus from '@/components/home/WhoIsVenus';
+import TheQuestion from '@/components/home/TheQuestion';
 import TheVision from '@/components/home/TheVision';
-import ConsciousDiplomacySection from '@/components/home/ConsciousDiplomacySection';
-import ElaraVegaSection from '@/components/home/ElaraVegaSection';
-import TheNewRaySection from '@/components/home/TheNewRaySection';
-import LibraryTeaser from '@/components/home/LibraryTeaser';
+import WorldPortals from '@/components/home/WorldPortals';
 import ProgramsSection from '@/components/home/ProgramsSection';
+import LibraryTeaser from '@/components/home/LibraryTeaser';
 import TheBook from '@/components/home/TheBook';
-import VenusNotesTeaser from '@/components/home/VenusNotesTeaser';
 import ContactSection from '@/components/home/ContactSection';
 
 interface Props {
@@ -23,14 +21,12 @@ export default async function HomePage({ params }: Props) {
     <>
       <Hero lang={lang} d={d} />
       <WhoIsVenus lang={lang} d={d} />
+      <TheQuestion d={d} />
       <TheVision d={d} />
-      <ConsciousDiplomacySection lang={lang} d={d} />
-      <ElaraVegaSection lang={lang} d={d} />
-      <TheNewRaySection d={d} />
-      <LibraryTeaser lang={lang} d={d} />
+      <WorldPortals lang={lang} d={d} />
       <ProgramsSection lang={lang} d={d} />
+      <LibraryTeaser lang={lang} d={d} />
       <TheBook lang={lang} d={d} />
-      <VenusNotesTeaser d={d} />
       <ContactSection d={d} />
     </>
   );

@@ -1,0 +1,273 @@
+.portalsWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Continuous trajectory line */
+.trajectoryWrap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10%;
+  width: 1px;
+  z-index: 0;
+}
+
+[dir="rtl"] .trajectoryWrap {
+  left: auto;
+  right: 10%;
+}
+
+.trajectoryLine {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(17, 28, 45, 0.1) 20%, rgba(17, 28, 45, 0.1) 60%, rgba(245, 242, 234, 0.1) 80%, transparent);
+  position: relative;
+}
+
+.trajectoryLight {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px 2px rgba(201, 174, 114, 0.2);
+  opacity: 0.8;
+  transition: opacity var(--dur-lg) var(--ease-editorial), box-shadow var(--dur-lg) var(--ease-editorial);
+}
+
+.evPortal:hover ~ .trajectoryWrap .trajectoryLight,
+.trajectoryWrap:has(~ .evPortal:hover) .trajectoryLight {
+  opacity: 1;
+  box-shadow: 0 0 16px 4px rgba(201, 174, 114, 0.4);
+}
+
+/* Base Portal Styles */
+.portal {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--space-32);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  transition: background-color var(--dur-xl) var(--ease-editorial), color var(--dur-xl) var(--ease-editorial);
+}
+
+.inner {
+  width: 100%;
+  max-width: 700px;
+  margin-left: 15%;
+}
+
+[dir="rtl"] .inner {
+  margin-left: auto;
+  margin-right: 15%;
+}
+
+.portalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.numWrap {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: var(--space-4);
+  opacity: 0.8;
+}
+
+.heading {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-8);
+  line-height: 1.1;
+  transition: transform var(--dur-md) var(--ease-editorial);
+}
+
+[dir="rtl"] .heading {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+}
+
+.portalContent:hover .heading {
+  transform: translateX(12px);
+}
+
+[dir="rtl"] .portalContent:hover .heading {
+  transform: translateX(-12px);
+}
+
+.rule {
+  width: 100px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.3;
+  margin-bottom: var(--space-8);
+  transition: width var(--dur-md) var(--ease-editorial);
+}
+
+.portalContent:hover .rule {
+  width: 140px;
+}
+
+.body {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  opacity: 0.7;
+  max-width: 40ch;
+  margin-bottom: var(--space-10);
+  font-weight: 300;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.cta::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width var(--dur-sm) var(--ease-editorial);
+}
+
+.portalContent:hover .cta::after {
+  width: 100%;
+}
+
+/* 01 Conscious Diplomacy */
+.cdPortal {
+  background: var(--ivory);
+  color: var(--navy);
+}
+
+/* Neural Noise canvas wrapper */
+.cdNoiseWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Canvas fills the div */
+  display: flex;
+  align-items: stretch;
+}
+
+.cdNoiseWrap canvas {
+  flex: 1;
+}
+
+.cdPortal .inner {
+  border-left: 1px solid rgba(17, 28, 45, 0.05);
+  padding-left: var(--space-8);
+}
+
+[dir="rtl"] .cdPortal .inner {
+  border-left: none;
+  border-right: 1px solid rgba(17, 28, 45, 0.05);
+  padding-left: 0;
+  padding-right: var(--space-8);
+}
+
+/* 02 The New Ray */
+.nrPortal {
+  background: var(--mist);
+  color: var(--navy);
+}
+
+/* Force legibility of btn-text on mist background */
+.nrPortal .cta {
+  color: var(--navy);
+  opacity: 1;
+  border-bottom-color: var(--navy);
+}
+
+/* God Rays canvas fills the whole portal section */
+.nrGodRays {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0;
+  opacity: 0.85; /* Increased visibility */
+  pointer-events: none;
+}
+
+.nrInner {
+  max-width: 900px;
+}
+
+.nrPortal .rule {
+  width: 150px;
+}
+
+.nrPortal .portalContent:hover .rule {
+  width: 300px;
+}
+
+/* 03 Elara Vega */
+.evPortal {
+  background: var(--navy);
+  color: var(--ivory);
+}
+
+.evPortal .heading {
+  letter-spacing: 0.05em;
+}
+
+.evPortal .body {
+  opacity: 0.6;
+}
+
+/* Orb wrapper — right-side planet glow */
+.evOrbWrap {
+  position: absolute;
+  top: 50%;
+  right: 15%; /* Moved further left into the section */
+  transform: translateY(-50%);
+  width: min(480px, 48vw);
+  height: min(480px, 48vw);
+  z-index: 0;
+  opacity: 0.6;
+  display: flex;
+  align-items: stretch;
+}
+
+[dir="rtl"] .evOrbWrap {
+  right: auto;
+  left: 15%;
+}
+
+/* Override Orb's own position:absolute so it sizes to this flex parent */
+.evOrbWrap :global(.orb-container) {
+  position: relative !important;
+  inset: unset !important;
+  flex: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 899px) {
+  .evOrbWrap {
+    top: 0;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(300px, 80vw);
+    height: min(300px, 80vw);
+    opacity: 0.25;
+  }
+  [dir="rtl"] .evOrbWrap {
+    left: 50%;
+    right: auto;
+  }
+}

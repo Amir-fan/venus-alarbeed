@@ -1,0 +1,131 @@
+.section {
+  background: var(--navy);
+  color: var(--ivory);
+  padding-block: var(--space-24) var(--space-24);
+  /* No gradient, no connecting line — clean hard edge against footer */
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+/* Eyebrow: rule + label */
+.eyebrowWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  margin-bottom: var(--space-12);
+  width: 100%;
+  justify-content: center;
+}
+
+.eyebrowRule {
+  width: 40px;
+  height: 1px;
+  background: rgba(245, 242, 234, 0.2);
+  flex-shrink: 0;
+}
+
+.eyebrow {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+[dir="rtl"] .eyebrow {
+  letter-spacing: 0;
+  font-family: var(--font-ar);
+  font-size: 0.75rem;
+}
+
+.heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-8);
+  white-space: pre-line; /* Honour the \n in the string */
+}
+
+[dir="rtl"] .heading {
+  font-family: var(--font-ar);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  letter-spacing: 0;
+  line-height: 1.4;
+  white-space: normal;
+}
+
+.body {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  opacity: 0.6;
+  font-weight: 300;
+  margin-bottom: var(--space-12);
+  max-width: 44ch;
+}
+
+[dir="rtl"] .body {
+  font-family: var(--font-ar);
+  font-size: 1.25rem;
+  line-height: 1.8;
+}
+
+.ctaWrap {
+  margin-bottom: var(--space-16);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  opacity: 0.7;
+  transition: opacity 250ms var(--ease-out), gap 250ms var(--ease-out);
+  text-decoration: none;
+}
+
+.cta:hover {
+  opacity: 1;
+  gap: var(--space-5);
+}
+
+[dir="rtl"] .cta {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: 0.9375rem;
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 250ms var(--ease-out);
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+[dir="rtl"] .cta:hover .ctaArrow {
+  transform: translateX(-4px);
+}
+
+/* Single gold dot — centered, no line above or below */
+.warmPoint {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.5;
+  margin-top: var(--space-4);
+}

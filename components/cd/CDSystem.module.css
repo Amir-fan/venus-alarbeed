@@ -1,0 +1,71 @@
+.section {
+  background: var(--ivory);
+  padding-block: var(--space-12) var(--space-24);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.labelTop {
+  margin-bottom: var(--space-24);
+}
+
+.chain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+}
+
+.chainLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.capName {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 1;
+}
+
+[dir="rtl"] .capName {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+}
+
+.connectorBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-block: var(--space-8);
+}
+
+.connectorLine {
+  width: 1px;
+  height: 60px;
+  background: rgba(17, 28, 45, 0.15);
+  margin-bottom: var(--space-6);
+}
+
+.synthesisText {
+  font-size: 0.9375rem;
+  font-style: italic;
+  color: var(--navy);
+  opacity: 0.5;
+  font-weight: 300;
+}
+
+[dir="rtl"] .synthesisText {
+  font-family: var(--font-ar);
+  font-style: normal;
+  font-size: 1rem;
+}

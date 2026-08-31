@@ -190,16 +190,93 @@
 /* Bottom */
 .bottom {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-8);
+  font-size: 0.75rem;
+  opacity: 0.6;
 }
 
-@media (min-width: 768px) {
+.bottomLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.devTag {
+  background: rgba(17, 28, 45, 0.03);
+  border: 1px solid rgba(17, 28, 45, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(17, 28, 45, 0.02);
+}
+
+.devTagLabel {
+  display: block;
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.devTagBrand {
+  font-weight: 600;
+  color: var(--navy);
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.devTagGlow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201,174,114,0.1) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1;
+}
+
+.devTag:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--ivory);
+  box-shadow: 0 8px 20px rgba(17, 28, 45, 0.15);
+  transform: translateY(-1px);
+}
+
+.devTag:hover .devTagBrand {
+  color: var(--ivory);
+}
+
+.devTag:hover .devTagGlow {
+  opacity: 1;
+}
+
+[dir="rtl"] .devTag {
+  text-align: center;
+}
+
+@media (max-width: 767px) {
   .bottom {
-    flex-direction: row;
+    flex-direction: column-reverse;
     align-items: center;
-    justify-content: space-between;
+    text-align: center;
+  }
+  
+  .bottomLeft {
+    align-items: center;
+  }
+  
+  .devTag {
+    text-align: center;
   }
 }
 

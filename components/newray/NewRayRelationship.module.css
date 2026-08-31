@@ -1,0 +1,191 @@
+.section {
+  background: var(--ivory);
+  padding-block: var(--space-24);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+/* ── Two panels ── */
+.panels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+}
+
+@media (min-width: 768px) {
+  .panels {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+}
+
+/* Panel top row: number + rule */
+.panelTop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.panelNum {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.panelRule {
+  flex: 1;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.12);
+}
+
+.panelLabel {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.45;
+  margin-bottom: var(--space-5);
+}
+
+[dir="rtl"] .panelLabel {
+  letter-spacing: 0;
+  font-family: var(--font-ar);
+  font-size: 0.75rem;
+}
+
+/* Panel A — CD: compact, structured */
+.panelA {
+  padding-block: var(--space-10);
+  padding-inline-end: var(--space-12);
+  border-inline-end: none;
+}
+
+@media (min-width: 768px) {
+  .panelA {
+    border-inline-end: 1px solid rgba(17, 28, 45, 0.1);
+    padding-inline-end: var(--space-16);
+  }
+}
+
+.panelTextA {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--navy);
+  opacity: 0.7;
+  max-width: 28ch;
+}
+
+[dir="rtl"] .panelTextA {
+  font-family: var(--font-ar);
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+
+/* Panel B — NR: open, expansive, serif italic */
+.panelB {
+  padding-block: var(--space-10);
+  padding-inline-start: 0;
+}
+
+@media (min-width: 768px) {
+  .panelB {
+    padding-inline-start: var(--space-16);
+  }
+}
+
+.panelTextB {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.3;
+  color: var(--navy);
+  max-width: 22ch;
+}
+
+[dir="rtl"] .panelTextB {
+  font-family: var(--font-ar);
+  font-style: normal;
+  font-size: clamp(1.375rem, 2.5vw, 2rem);
+  line-height: 1.5;
+}
+
+/* ── Mid divider ── */
+.midRule {
+  width: 100%;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.12);
+}
+
+/* ── Question index ── */
+.questionIndex {
+  display: flex;
+  flex-direction: column;
+}
+
+.qRow {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto;
+  align-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-8);
+  position: relative;
+}
+
+.qRow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.08);
+}
+
+.qNum {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.18em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+
+.qText {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2.5vw, 1.875rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+[dir="rtl"] .qText {
+  font-family: var(--font-ar);
+  font-style: normal;
+  font-size: clamp(1.125rem, 2.5vw, 1.75rem);
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+.qRule {
+  width: 24px;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.2);
+  flex-shrink: 0;
+}
+
+[dir="rtl"] .qRow {
+  grid-template-columns: auto 1fr 2.5rem;
+}

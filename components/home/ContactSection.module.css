@@ -176,8 +176,8 @@
 
 .input {
   width: 100%;
-  background: rgba(245, 242, 234, 0.05);
-  border: 1px solid rgba(245, 242, 234, 0.1);
+  background: transparent;
+  border: 1px solid rgba(245, 242, 234, 0.2);
   border-radius: 2px;
   color: var(--ivory);
   font-family: var(--font-en);
@@ -185,8 +185,8 @@
   padding: var(--space-4) var(--space-5);
   outline: none;
   transition:
-    border-color var(--dur-sm) var(--ease-out),
-    background var(--dur-sm) var(--ease-out);
+    border-color var(--dur-sm) var(--ease-editorial),
+    background var(--dur-sm) var(--ease-editorial);
   appearance: none;
 }
 
@@ -196,13 +196,13 @@
 }
 
 .input::placeholder {
-  color: rgba(245, 242, 234, 0.3);
+  color: rgba(245, 242, 234, 0.4);
   font-weight: 300;
 }
 
 .input:focus {
-  border-color: rgba(201, 174, 114, 0.5);
-  background: rgba(245, 242, 234, 0.08);
+  border-color: rgba(245, 242, 234, 0.4);
+  background: rgba(245, 242, 234, 0.03);
 }
 
 .textarea {

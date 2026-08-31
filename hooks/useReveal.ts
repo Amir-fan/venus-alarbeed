@@ -37,7 +37,7 @@ export function useRevealGroup<T extends HTMLElement>(
     const container = ref.current;
     if (!container) return;
 
-    const children = container.querySelectorAll('.reveal');
+    const children = container.querySelectorAll('.reveal, .quiet-reveal, .mask-reveal, .drawing-rule');
     
     const observer = new IntersectionObserver(
       ([entry]) => {

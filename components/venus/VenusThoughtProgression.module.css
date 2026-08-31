@@ -1,0 +1,135 @@
+.section {
+  background: var(--mist);
+  padding-block: var(--space-32);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+}
+
+.header {
+  max-width: 600px;
+}
+
+.heading {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--navy);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+[dir="rtl"] .heading {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.subhead {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--navy);
+  opacity: 0.55;
+  font-weight: 300;
+}
+
+[dir="rtl"] .subhead {
+  font-family: var(--font-ar);
+  font-size: 1.0625rem;
+}
+
+/* Progression */
+.progressionWrap {
+  max-width: 760px;
+}
+
+.step {
+  position: relative;
+}
+
+.rule {
+  width: 100%;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.12);
+}
+
+.stepContent {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-8);
+  padding-block: var(--space-6);
+}
+
+@media (min-width: 600px) {
+  .stepContent {
+    gap: var(--space-12);
+  }
+}
+
+.stepLeft {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  min-width: 240px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 599px) {
+  .stepLeft {
+    min-width: 0;
+    flex: 1;
+  }
+  .stepDescriptor {
+    display: none;
+  }
+}
+
+.stepNum {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--navy);
+  opacity: 0.3;
+  flex-shrink: 0;
+}
+
+.stepLabel {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+  line-height: 1.1;
+}
+
+[dir="rtl"] .stepLabel {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.stepDescriptor {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--navy);
+  opacity: 0.45;
+  font-weight: 300;
+  font-style: italic;
+}
+
+[dir="rtl"] .stepDescriptor {
+  font-family: var(--font-ar);
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.connector {
+  font-size: 0.75rem;
+  color: var(--navy);
+  opacity: 0.2;
+  margin-block: var(--space-1);
+  padding-inline-start: 4px;
+}

@@ -22,6 +22,7 @@ export const dict = {
     },
     venus: {
       label: 'Who is Venus?',
+      questionLabel: 'The Question',
       heading: 'Venus Alarbeed',
       body: 'Diplomat. Lawyer. Writer. Speaker. Trainer. Venus Wajih Alarbeed works at the intersection of diplomacy, international law, strategic thinking, human relationships, and awareness.',
       question: 'How can a human being exercise influence consciously — without losing their humanity?',
@@ -82,6 +83,12 @@ export const dict = {
       heading: 'A space for human awareness and possibility.',
       body: 'The New Ray is the wider extension of awareness beyond diplomacy. A space that explores human beings, relationships, awareness, possibility, and transformation — and the questions that emerge when we begin to see ourselves and the world differently.',
       distinction: 'If Conscious Diplomacy focuses on the human inside relationships of influence and power — The New Ray widens the lens toward the human being itself.',
+      questions: [
+        'How we see.',
+        'How we relate.',
+        'What becomes possible.',
+        'How perspective shapes experience.'
+      ]
     },
     library: {
       label: 'The Venus Library',
@@ -153,7 +160,7 @@ export const dict = {
       body: 'Be the first to know when Conscious Diplomacy is available.',
       namePlaceholder: 'Your name',
       emailPlaceholder: 'Your email',
-      phonePlaceholder: 'Phone number (optional)',
+      phonePlaceholder: 'Phone number',
       submit: 'Join Waitlist',
       success: 'You have been added to the waitlist. We will notify you when it opens.',
     },
@@ -182,6 +189,7 @@ export const dict = {
     },
     venus: {
       label: 'من هي فينوس؟',
+      questionLabel: 'السؤال',
       heading: 'فينوس العربيد',
       body: 'دبلوماسية، محامية، كاتبة، متحدثة ومدرّبة. فينوس وجيه العربيد تجمع في عملها بين الدبلوماسية والقانون الدولي والتفكير الاستراتيجي وفهم العلاقات الإنسانية والوعي.',
       question: 'كيف يمكن للإنسان أن يمارس تأثيره بوعي، دون أن يفقد إنسانيته؟',
@@ -239,9 +247,15 @@ export const dict = {
     },
     newray: {
       label: 'الشعاع الجديد',
-      heading: 'مساحة للوعي الإنساني والإمكان.',
-      body: 'الشعاع الجديد هو الامتداد الأوسع لفكرة الوعي. مساحة تستكشف الإنسان والعلاقات والوعي والإمكان والتحول، والأسئلة التي تظهر عندما نبدأ في رؤية أنفسنا والعالم بطريقة مختلفة.',
-      distinction: 'إذا كانت الدبلوماسية الواعية تركز على الإنسان داخل علاقات القوة والتأثير — فإن الشعاع الجديد يوسع العدسة نحو الإنسان نفسه.',
+      heading: 'مساحة للوعي البشري والإمكانيات.',
+      body: 'الشعاع الجديد هو الامتداد الأوسع للوعي خارج نطاق الدبلوماسية. مساحة تستكشف البشر، العلاقات، الوعي، الإمكانيات، والتحول - والأسئلة التي تظهر عندما نبدأ في رؤية أنفسنا والعالم بشكل مختلف.',
+      distinction: 'إذا كانت الدبلوماسية الواعية تركز على الإنسان داخل علاقات التأثير والقوة - فإن الشعاع الجديد يوسع العدسة نحو الإنسان نفسه.',
+      questions: [
+        'كيف نرى.',
+        'كيف نتواصل.',
+        'ما الذي يصبح ممكناً.',
+        'كيف يشكل المنظور تجربتنا.'
+      ]
     },
     library: {
       label: 'مكتبة فينوس',
@@ -318,7 +332,7 @@ export const dict = {
       body: 'كن أول من يعلم عند توفر الدبلوماسية الواعية.',
       namePlaceholder: 'اسمك',
       emailPlaceholder: 'بريدك الإلكتروني',
-      phonePlaceholder: 'رقم الهاتف (اختياري)',
+      phonePlaceholder: 'رقم الهاتف',
       submit: 'انضم الآن',
       success: 'تمت إضافتك إلى القائمة. سنعلمك عند الافتتاح.',
     },

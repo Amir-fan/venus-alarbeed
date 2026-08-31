@@ -1,6 +1,12 @@
 import { dict, type Locale } from '@/lib/i18n';
-import styles from './page.module.css';
-import Link from 'next/link';
+import VenusHero from '@/components/venus/VenusHero';
+import VenusQuestion from '@/components/venus/VenusQuestion';
+import VenusBiography from '@/components/venus/VenusBiography';
+import VenusThoughtProgression from '@/components/venus/VenusThoughtProgression';
+import VenusWriterSpeaker from '@/components/venus/VenusWriterSpeaker';
+import VenusThreeWorlds from '@/components/venus/VenusThreeWorlds';
+import VenusClosingStatement from '@/components/venus/VenusClosingStatement';
+import ContactSection from '@/components/home/ContactSection';
 
 interface Props {
   params: Promise<{ lang: string }>;
@@ -10,8 +16,8 @@ export async function generateMetadata({ params }: Props) {
   const { lang } = (await params) as { lang: Locale };
   const d = dict[lang];
   return {
-    title: d.nav.venus,
-    description: d.venus.heading,
+    title: `${d.hero.nameFirst} ${d.hero.nameLast}`,
+    description: d.venus.body,
   };
 }
 
@@ -20,76 +26,30 @@ export default async function VenusPage({ params }: Props) {
   const d = dict[lang];
 
   return (
-    <div className={styles.page}>
-      
-      {/* Cinematic Hero */}
-      <section className={styles.hero}>
-        <div className={styles.heroBg}>
-          <div className={styles.glow} />
-        </div>
-        <div className={styles.heroContent}>
-          <p className={styles.label}>{d.venus.label}</p>
-          <h1 className={styles.heading}>{d.venus.heading}</h1>
-          <p className={styles.body}>{d.venus.body}</p>
-        </div>
-      </section>
+    <>
+      {/* 1. Cinematic opening: portrait + name reveal */}
+      <VenusHero d={d} />
 
-      {/* The Core Question */}
-      <section className={styles.questionSection}>
-        <div className={styles.questionWrapper}>
-          <h2 className={styles.question}>{d.venus.question}</h2>
-        </div>
-      </section>
+      {/* 2. The central question — full-viewport navy */}
+      <VenusQuestion d={d} />
 
-      {/* Professional Dimensions (Cinematic layout) */}
-      <section className={styles.dimensionsSection}>
-        <div className={styles.dimensionGrid}>
-          
-          <div className={styles.dimensionBlock}>
-            <div className={styles.dimNum}>01</div>
-            <h3 className={styles.dimTitle}>Diplomatic Background</h3>
-            <p className={styles.dimText}>
-              Extensive experience operating within high-stakes international environments, focusing on sovereign relations and strategic representation.
-            </p>
-          </div>
+      {/* 3. Sticky portrait + scrolling biography chapters */}
+      <VenusBiography d={d} />
 
-          <div className={styles.dimensionBlock}>
-            <div className={styles.dimNum}>02</div>
-            <h3 className={styles.dimTitle}>International Law</h3>
-            <p className={styles.dimText}>
-              Specialized expertise in international legal frameworks, arbitration, and the complexities of cross-border jurisprudence.
-            </p>
-          </div>
+      {/* 4. Editorial thought progression */}
+      <VenusThoughtProgression d={d} />
 
-          <div className={styles.dimensionBlock}>
-            <div className={styles.dimNum}>03</div>
-            <h3 className={styles.dimTitle}>Strategic Thinking</h3>
-            <p className={styles.dimText}>
-              Fusing legal precision with diplomatic insight to navigate systems, power dynamics, and complex human relationships.
-            </p>
-          </div>
+      {/* 5. Writer + Speaker dimensions */}
+      <VenusWriterSpeaker lang={lang} d={d} />
 
-          <div className={styles.dimensionBlock}>
-            <div className={styles.dimNum}>04</div>
-            <h3 className={styles.dimTitle}>Awareness & Influence</h3>
-            <p className={styles.dimText}>
-              Pioneering the Conscious Diplomacy framework—training leaders to exercise influence without losing their humanity.
-            </p>
-          </div>
+      {/* 6. The three worlds Venus created */}
+      <VenusThreeWorlds lang={lang} d={d} />
 
-        </div>
-      </section>
+      {/* 7. Closing dark statement */}
+      <VenusClosingStatement d={d} />
 
-      {/* CTA Section */}
-      <section className={styles.ctaSection}>
-        <div className={styles.ctaInner}>
-          <p className={styles.ctaText}>The foundation of the vision.</p>
-          <Link href={`/${lang}/conscious-diplomacy`} className={styles.exploreBtn}>
-            {d.cd.cta} →
-          </Link>
-        </div>
-      </section>
-
-    </div>
+      {/* 8. Contact — natural conversation transition */}
+      <ContactSection d={d} />
+    </>
   );
 }

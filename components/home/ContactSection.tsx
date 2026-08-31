@@ -72,25 +72,25 @@ export default function ContactSection({ d }: Props) {
       <div className={`container ${styles.inner}`}>
 
         <div className={styles.left}>
-          <div className="section-label reveal">
+          <div className="section-label quiet-reveal">
             <div className={styles.dot} />
             <span className={styles.sLabel}>{d.contact.label}</span>
           </div>
 
           <h2
             id="contact-heading"
-            className={`${styles.heading} reveal reveal-delay-1`}
+            className={`${styles.heading} quiet-reveal reveal-delay-1`}
           >
             {d.contact.heading}
           </h2>
 
-          <ul className={`${styles.reasons} reveal reveal-delay-2`}>
+          <ul className={`${styles.reasons} quiet-reveal reveal-delay-2`}>
             {d.contact.reasons.map((r) => (
               <li key={r} className={styles.reason}>{r}</li>
             ))}
           </ul>
 
-          <div className={`${styles.directLinks} reveal reveal-delay-3`}>
+          <div className={`${styles.directLinks} quiet-reveal reveal-delay-3`}>
             <p className={styles.orText}>{d.contact.or}</p>
             <a
               href="https://wa.me/963936404719"
@@ -132,7 +132,7 @@ export default function ContactSection({ d }: Props) {
             </div>
           ) : (
             <form
-              className={`${styles.form} reveal reveal-delay-2`}
+              className={`${styles.form} quiet-reveal reveal-delay-2`}
               onSubmit={handleSubmit}
               noValidate
             >

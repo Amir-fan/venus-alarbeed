@@ -24,7 +24,9 @@ export default function Hero({ lang, d }: Props) {
     <section className={styles.hero} aria-label="Hero">
       {/* Subtle background geometry */}
       <div className={styles.geometry} aria-hidden="true">
-        <div className={styles.geoLine1} />
+        <div className={styles.geoLine1}>
+          <div className={`${styles.geoLightPoint} ${mounted ? styles.geoLightActive : ''}`} />
+        </div>
         <div className={styles.geoLine2} />
         <div className={styles.geoCircle} />
       </div>
@@ -49,21 +51,25 @@ export default function Hero({ lang, d }: Props) {
             <span className={`t-label ${styles.tagline}`}>{d.hero.tagline}</span>
           </div>
 
-          <h1 className={`${styles.name} ${mounted ? styles.nameVisible : ''}`}>
-            {d.hero.nameFirst}
-            <br />
-            {d.hero.nameLast}
+          <h1 className={styles.nameWrap}>
+            <span className={`${styles.name} ${mounted ? styles.nameVisible : ''}`}>
+              <span className={`${styles.nameInner} ${mounted ? styles.foilActive : ''}`}>
+                {d.hero.nameFirst}
+                <br />
+                {d.hero.nameLast}
+              </span>
+            </span>
           </h1>
 
-          <p className={styles.statement}>{d.hero.statement}</p>
+          <p className={`${styles.statement} ${mounted ? styles.statementVisible : ''}`}>{d.hero.statement}</p>
 
           <div className={styles.cta}>
-            <Link href={`/${lang}/conscious-diplomacy`} className={`btn btn-ghost ${styles.ctaBtn}`}>
+            <a href="#question" className={`btn btn-ghost ${styles.ctaBtn}`}>
               {d.hero.cta}
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

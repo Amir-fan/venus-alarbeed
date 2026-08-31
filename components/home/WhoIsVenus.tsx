@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Locale, Dict } from '@/lib/i18n';
 import { useRevealGroup } from '@/hooks/useReveal';
 import styles from './WhoIsVenus.module.css';
@@ -21,9 +22,11 @@ export default function WhoIsVenus({ lang, d }: Props) {
             <div className="dot" />
             <span>{d.venus.label}</span>
           </div>
-          <div className={`${styles.roleList} reveal reveal-delay-2`}>
-            {['Diplomat', 'Lawyer', 'Writer', 'Speaker', 'Trainer'].map((role) => (
-              <span key={role} className={styles.role}>{role}</span>
+          <div className={`${styles.roleList}`}>
+            {['Diplomat', 'Lawyer', 'Writer', 'Speaker', 'Trainer'].map((role, i) => (
+              <span key={role} className={`${styles.roleWrap} mask-reveal-wrap`}>
+                <span className={`mask-reveal reveal-delay-${i + 1}`}>{role}</span>
+              </span>
             ))}
           </div>
         </div>
@@ -40,10 +43,15 @@ export default function WhoIsVenus({ lang, d }: Props) {
             {d.venus.body}
           </p>
 
-          <blockquote className={`${styles.question} reveal reveal-delay-2`}>
-            <span className={styles.questionMark} aria-hidden="true">&ldquo;</span>
-            <p className={styles.questionText}>{d.venus.question}</p>
-          </blockquote>
+          <div className={`${styles.imageWrap} reveal reveal-delay-2`}>
+            <Image 
+              src="https://images.unsplash.com/photo-1577985051167-0d49eec21977?auto=format&fit=crop&w=800&q=80" 
+              alt="Venus Alarbeed environment"
+              fill
+              className={styles.image}
+              unoptimized // Allow external URL without next.config.js setup for now
+            />
+          </div>
 
           <div className={`reveal reveal-delay-3`}>
             <Link href={`/${lang}/venus`} className="btn btn-text">

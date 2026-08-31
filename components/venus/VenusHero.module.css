@@ -1,0 +1,219 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  background: var(--ivory);
+  display: flex;
+  align-items: center;
+  padding-top: 88px; /* nav height */
+  overflow: hidden;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--space-8);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    grid-template-columns: 5fr 6fr;
+    gap: 0;
+    padding-inline: 0;
+    padding-inline-start: var(--space-8);
+    align-items: stretch;
+  }
+}
+
+@media (min-width: 1200px) {
+  .inner {
+    grid-template-columns: 5fr 7fr;
+    padding-inline-start: var(--space-20);
+  }
+}
+
+/* Portrait Column */
+.portraitCol {
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .portraitCol {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+}
+
+.portraitMask {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  max-height: 70vh;
+}
+
+@media (min-width: 768px) {
+  .portraitMask {
+    aspect-ratio: unset;
+    height: 100vh;
+    max-height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+}
+
+.portraitFrame {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%);
+  transition: transform 900ms var(--ease-editorial);
+}
+
+.portraitFrameVisible {
+  transform: translateY(0);
+}
+
+.portraitImg {
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Content Column */
+.contentCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: var(--space-16);
+}
+
+@media (min-width: 768px) {
+  .contentCol {
+    order: 1;
+    padding-inline-end: var(--space-16);
+    padding-block: var(--space-32) var(--space-20);
+  }
+}
+
+@media (min-width: 1200px) {
+  .contentCol {
+    padding-inline-end: var(--space-24);
+  }
+}
+
+/* Name */
+.nameWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: var(--space-8);
+}
+
+.nameLine {
+  display: block;
+  overflow: hidden;
+  line-height: 0.92;
+}
+
+.nameClip {
+  display: block;
+  font-size: clamp(4rem, 10vw, 8.5rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--navy);
+  transform: translateY(105%);
+  transition: transform 750ms var(--ease-editorial);
+}
+
+.nameClipDelay {
+  transition-delay: 180ms;
+}
+
+.nameClipVisible {
+  transform: translateY(0);
+}
+
+[dir="rtl"] .nameClip {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: clamp(3.5rem, 9vw, 7.5rem);
+}
+
+/* Disciplines */
+.disciplines {
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0;
+  transition: opacity 400ms var(--ease-editorial);
+  margin-top: var(--space-5);
+}
+
+.disciplinesDesktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .disciplines {
+    display: none;
+  }
+  .disciplinesDesktop {
+    display: block;
+    font-size: 0.5625rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy);
+    opacity: 0;
+    transition: opacity 400ms var(--ease-editorial);
+    margin-bottom: var(--space-10);
+  }
+}
+
+.disciplinesVisible {
+  opacity: 0.4;
+}
+
+[dir="rtl"] .disciplines,
+[dir="rtl"] .disciplinesDesktop {
+  letter-spacing: 0.05em;
+  font-family: var(--font-ar);
+  font-size: 0.75rem;
+}
+
+/* Intro paragraph */
+.intro {
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--navy);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 500ms var(--ease-editorial), transform 500ms var(--ease-editorial);
+  transition-delay: 200ms;
+  max-width: 44ch;
+}
+
+.introVisible {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+
+[dir="rtl"] .intro {
+  font-family: var(--font-ar);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nameClip { transform: none; transition: none; opacity: 1; }
+  .portraitFrame { transform: none; transition: none; }
+  .intro, .disciplines, .disciplinesDesktop { opacity: 0.7; transform: none; transition: none; }
+}

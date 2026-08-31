@@ -12,42 +12,43 @@
   }
 }
 
-/* Atmospheric geometry — CSS only, no stock photos */
+/* Atmospheric Orb behind content */
 .atmosphere {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.atmCircle1 {
-  position: absolute;
-  top: -20%;
-  inset-inline-end: -15%;
-  width: 700px;
-  height: 700px;
-  border: 1px solid rgba(142, 169, 184, 0.06);
-  border-radius: 50%;
-}
-
-.atmCircle2 {
-  position: absolute;
-  bottom: -30%;
-  inset-inline-start: -10%;
-  width: 500px;
-  height: 500px;
-  border: 1px solid rgba(201, 174, 114, 0.04);
-  border-radius: 50%;
-}
-
-.atmLine {
-  position: absolute;
   top: 50%;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(142, 169, 184, 0.06) 40%, rgba(142, 169, 184, 0.06) 60%, transparent 100%);
-  transform: rotate(-1deg);
+  inset-inline-end: -8%;
+  transform: translateY(-50%);
+  width: min(600px, 55vw);
+  height: min(600px, 55vw);
+  z-index: 0;
+  opacity: 0.5;
+  /* position:relative is needed so the Orb canvas (position:absolute;inset:0) fills this div */
+  display: flex;
+  align-items: stretch;
+}
+
+/* The orb-container is position:absolute from its own CSS —
+   override to be relative so it fills the flex parent above */
+.atmosphere :global(.orb-container) {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  inset: unset !important;
+  pointer-events: auto;
+  flex: 1;
+}
+
+/* On mobile */
+@media (max-width: 899px) {
+  .atmosphere {
+    top: -5%;
+    inset-inline-end: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(340px, 85vw);
+    height: min(340px, 85vw);
+    opacity: 0.3;
+  }
 }
 
 .inner {

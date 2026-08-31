@@ -1,6 +1,6 @@
 .section {
-  background: var(--navy-mid);
-  color: var(--ivory);
+  background: var(--ivory);
+  color: var(--navy);
   border-top: none;
 }
 
@@ -35,7 +35,7 @@
   font-weight: 300;
   letter-spacing: -0.025em;
   line-height: 1.05;
-  color: var(--ivory);
+  color: var(--navy);
 }
 
 [dir="rtl"] .heading {
@@ -46,14 +46,14 @@
 }
 
 .body {
-  color: var(--ivory);
-  opacity: 0.4;
+  color: var(--navy);
+  opacity: 0.6;
   max-width: 52ch;
 }
 
 /* Programs list */
 .list {
-  border-top: 1px solid rgba(245, 242, 234, 0.08);
+  border-top: 1px solid rgba(17, 28, 45, 0.1);
 }
 
 .program {
@@ -61,55 +61,36 @@
   align-items: center;
   gap: var(--space-6);
   padding-block: var(--space-6);
-  border-bottom: 1px solid rgba(245, 242, 234, 0.06);
-  cursor: default;
-  transition: padding-inline-start var(--dur-sm) var(--ease-out);
+  border-bottom: 1px solid rgba(17, 28, 45, 0.1);
+  cursor: pointer;
 }
 
-.program:hover {
-  padding-inline-start: var(--space-3);
-}
-
-[dir="rtl"] .program:hover {
-  padding-inline-start: 0;
-  padding-inline-end: var(--space-3);
-}
-
-.programTag {
-  font-size: 0.5625rem;
+.programNum {
+  font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.7;
-  min-width: 120px;
+  color: var(--navy);
+  opacity: 0.3;
+  width: 24px;
   flex-shrink: 0;
-}
-
-@media (max-width: 480px) {
-  .programTag {
-    display: none;
-  }
-}
-
-[dir="rtl"] .programTag {
-  letter-spacing: 0;
-  font-size: 0.6875rem;
-  font-family: var(--font-ar);
 }
 
 .programTitle {
   flex: 1;
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   font-weight: 400;
   letter-spacing: -0.005em;
-  color: var(--ivory);
-  opacity: 0.8;
-  transition: opacity var(--dur-sm) var(--ease-out);
+  color: var(--navy);
+  opacity: 0.9;
+  transition: transform var(--dur-sm) var(--ease-editorial);
 }
 
 .program:hover .programTitle {
-  opacity: 1;
+  transform: translateX(8px);
+}
+
+[dir="rtl"] .program:hover .programTitle {
+  transform: translateX(-8px);
 }
 
 [dir="rtl"] .programTitle {
@@ -118,31 +99,54 @@
   letter-spacing: 0;
 }
 
+.programTag {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  min-width: 120px;
+  flex-shrink: 0;
+  text-align: right;
+  transition: opacity var(--dur-sm) var(--ease-editorial);
+}
+
+.program:hover .programTag {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .programTag {
+    display: none;
+  }
+}
+
+[dir="rtl"] .programTag {
+  letter-spacing: 0;
+  text-align: left;
+  font-size: 0.75rem;
+  font-family: var(--font-ar);
+}
+
 .programArrow {
-  font-size: 0.875rem;
-  color: var(--ivory);
-  opacity: 0.2;
-  transition: opacity var(--dur-sm) var(--ease-out), transform var(--dur-sm) var(--ease-out);
+  font-size: 1rem;
+  color: var(--navy);
+  opacity: 0.3;
+  transition: opacity var(--dur-sm) var(--ease-editorial), transform var(--dur-sm) var(--ease-editorial);
   flex-shrink: 0;
 }
 
 .program:hover .programArrow {
-  opacity: 0.5;
-  transform: translateX(4px);
+  opacity: 0.8;
+  transform: translateX(8px);
 }
 
 [dir="rtl"] .program:hover .programArrow {
-  transform: translateX(-4px);
+  transform: translateX(-8px);
 }
 
 .cta {
   align-self: flex-start;
-  border-color: rgba(245, 242, 234, 0.25);
-  color: var(--ivory);
 }
 
-.cta:hover {
-  background: var(--ivory);
-  color: var(--navy);
-  border-color: var(--ivory);
-}

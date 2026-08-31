@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Locale } from '@/lib/i18n';
 import type { Dict } from '@/lib/i18n';
+import DevTag from './DevTag';
 import styles from './Footer.module.css';
 
 interface Props {
@@ -84,7 +85,13 @@ export default function Footer({ lang, d }: Props) {
 
         {/* Bottom row */}
         <div className={styles.bottom}>
-          <p className={styles.copyright}>{d.footer.copyright}</p>
+          <div className={styles.bottomLeft}>
+            <p className={styles.copyright}>
+              © {new Date().getFullYear()} {d.hero.nameFirst} {d.hero.nameLast}.{' '}
+              {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
+            </p>
+            <DevTag />
+          </div>
           <div className={styles.social}>
             {personalSocial.map(({ label, href, icon: Icon }) => (
               <a

@@ -1,0 +1,109 @@
+.section {
+  background: var(--mist);
+  padding-block: var(--space-20);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-16);
+}
+
+@media (min-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-20);
+    align-items: start;
+  }
+}
+
+.heading {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--navy);
+}
+
+[dir="rtl"] .heading {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--space-10);
+  gap: var(--space-4);
+  position: relative;
+}
+
+@media (min-width: 600px) {
+  .item {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--space-10);
+  }
+}
+
+.itemRule {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.1);
+}
+
+.itemName {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-6);
+  flex-shrink: 0;
+  min-width: 260px;
+}
+
+.itemNum {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+.itemName h3 {
+  font-size: 1.125rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--navy);
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .itemName h3 {
+  letter-spacing: 0;
+  font-family: var(--font-ar);
+  font-size: 1.25rem;
+}
+
+.itemDesc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--navy);
+  opacity: 0.6;
+  font-style: italic;
+  font-weight: 300;
+  flex: 1;
+}
+
+[dir="rtl"] .itemDesc {
+  font-family: var(--font-ar);
+  font-style: normal;
+  font-size: 1.125rem;
+}

@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 import type { Locale, Dict } from '@/lib/i18n';
-import styles from './page.module.css';
 import WaitlistModal from '@/components/ui/WaitlistModal';
+import ProgramsHero from '@/components/programs/ProgramsHero';
+import ProgramRegister from '@/components/programs/ProgramRegister';
+import ProgramRelationship from '@/components/programs/ProgramRelationship';
+import ProgramWaitlist from '@/components/programs/ProgramWaitlist';
+import styles from './page.module.css';
 
 interface Props {
   lang: Locale;
@@ -15,38 +19,22 @@ export default function ProgramsView({ lang, d }: Props) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.hero}>
-        <div className={styles.content}>
-          <p className={styles.label}>{d.programs.label}</p>
-          <h1 className={styles.heading}>{d.programs.heading}</h1>
-          <p className={styles.body}>{d.programs.body}</p>
-        </div>
-      </div>
+      {/* 1. Hero */}
+      <ProgramsHero d={d} />
 
-      <div className={styles.listSection}>
-        <div className={styles.list}>
-          {d.programs.list.map((prog, i) => (
-            <div key={prog.title} className={styles.programCard}>
-              <div className={styles.progHeader}>
-                <span className={styles.progTag}>{prog.tag}</span>
-                <span className={styles.progNumber}>0{i + 1}</span>
-              </div>
-              <h3 className={styles.progTitle}>{prog.title}</h3>
-              <button 
-                onClick={() => setWaitlistOpen(true)}
-                className={styles.progBtn}
-              >
-                {d.waitlist.submit} →
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* 2. Programme Register — the signature component */}
+      <ProgramRegister d={d} onWaitlist={() => setWaitlistOpen(true)} />
 
-      <WaitlistModal 
-        isOpen={waitlistOpen} 
-        onClose={() => setWaitlistOpen(false)} 
-        d={d} 
+      {/* 3. One body of thought */}
+      <ProgramRelationship d={d} />
+
+      {/* 4. Shared waitlist invitation */}
+      <ProgramWaitlist d={d} onWaitlist={() => setWaitlistOpen(true)} />
+
+      <WaitlistModal
+        isOpen={waitlistOpen}
+        onClose={() => setWaitlistOpen(false)}
+        d={d}
       />
     </div>
   );

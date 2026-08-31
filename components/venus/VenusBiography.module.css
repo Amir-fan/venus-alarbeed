@@ -1,0 +1,226 @@
+.section {
+  background: var(--ivory);
+  padding-block: 0;
+}
+
+.sectionHeader {
+  padding-block: var(--space-20) var(--space-12);
+  border-bottom: 1px solid rgba(17, 28, 45, 0.07);
+}
+
+.sectionHeading {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--navy);
+  margin-top: var(--space-6);
+  max-width: 600px;
+}
+
+[dir="rtl"] .sectionHeading {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+/* Two-column body */
+.body {
+  display: grid;
+  grid-template-columns: 1fr;
+  position: relative;
+}
+
+@media (min-width: 900px) {
+  .body {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Portrait sticky column */
+.portraitCol {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .portraitCol {
+    display: block;
+    position: relative;
+  }
+}
+
+.stickyPortrait {
+  position: sticky;
+  top: 88px;
+  height: calc(100svh - 88px);
+  overflow: hidden;
+}
+
+.portraitImg {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.portraitOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 60%, var(--ivory) 100%);
+  pointer-events: none;
+}
+
+.activeNum {
+  position: absolute;
+  bottom: var(--space-12);
+  left: var(--space-8);
+  font-size: 5rem;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--ivory);
+  opacity: 0.12;
+  line-height: 1;
+  user-select: none;
+  transition: opacity 400ms var(--ease-editorial);
+}
+
+/* Chapters column */
+.chaptersCol {
+  padding-inline-start: 0;
+}
+
+@media (min-width: 900px) {
+  .chaptersCol {
+    padding-inline-start: var(--space-16);
+    padding-inline-end: var(--space-8);
+  }
+}
+
+@media (min-width: 1200px) {
+  .chaptersCol {
+    padding-inline-start: var(--space-20);
+    padding-inline-end: var(--space-20);
+  }
+}
+
+/* Chapter */
+.chapter {
+  padding-block: var(--space-20);
+  opacity: 0.35;
+  transition: opacity 500ms var(--ease-editorial);
+}
+
+@media (min-width: 900px) {
+  .chapter {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0.3;
+  }
+}
+
+.chapterActive {
+  opacity: 1;
+}
+
+.chapterRule {
+  width: 0;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.15);
+  transition: width 600ms var(--ease-editorial);
+  margin-bottom: var(--space-10);
+}
+
+@media (max-width: 899px) {
+  .chapterRule {
+    width: 100%;
+  }
+}
+
+.chapterActive .chapterRule {
+  width: 100%;
+}
+
+.chapterInner {
+  display: flex;
+  gap: var(--space-8);
+  align-items: flex-start;
+}
+
+.chapterNum {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--navy);
+  opacity: 0.35;
+  flex-shrink: 0;
+  padding-top: 4px;
+  transition: opacity 400ms var(--ease-editorial);
+}
+
+.chapterActive .chapterNum {
+  opacity: 0.6;
+  color: var(--gold);
+}
+
+.chapterContent {
+  flex: 1;
+}
+
+.chapterTitle {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--navy);
+  margin-bottom: var(--space-6);
+  transform: translateX(-8px);
+  transition: transform 450ms var(--ease-editorial), opacity 450ms var(--ease-editorial);
+  opacity: 0.5;
+}
+
+.chapterActive .chapterTitle {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+[dir="rtl"] .chapterTitle {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  transform: translateX(8px);
+}
+
+[dir="rtl"] .chapterActive .chapterTitle {
+  transform: translateX(0);
+}
+
+.chapterBody {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--navy);
+  opacity: 0.55;
+  max-width: 52ch;
+  font-weight: 300;
+  transition: opacity 500ms var(--ease-editorial);
+}
+
+.chapterActive .chapterBody {
+  opacity: 0.75;
+}
+
+[dir="rtl"] .chapterBody {
+  font-family: var(--font-ar);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.chapterRuleEnd {
+  width: 100%;
+  height: 1px;
+  background: rgba(17, 28, 45, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter { opacity: 1; transition: none; }
+  .chapterTitle { transform: none; opacity: 1; transition: none; }
+  .chapterRule { width: 100%; transition: none; }
+}

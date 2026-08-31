@@ -24,6 +24,31 @@
   transform: rotate(-12deg);
 }
 
+.geoLightPoint {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px 2px rgba(201, 174, 114, 0.3);
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10%;
+  opacity: 0;
+}
+
+.geoLightActive {
+  animation: lightTravel 3s var(--ease-editorial) forwards;
+  animation-delay: 400ms;
+}
+
+@keyframes lightTravel {
+  0% { left: 10%; opacity: 0; }
+  20% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { left: 50%; opacity: 0; }
+}
+
 .geoLine2 {
   position: absolute;
   bottom: 30%;
@@ -157,25 +182,49 @@
   opacity: 0.85;
 }
 
-/* Name */
+/* Name Reveal & Foil */
+.nameWrap {
+  overflow: hidden;
+  margin-bottom: var(--space-10);
+  display: block;
+}
+
 .name {
   font-size: clamp(3.5rem, 10vw, 8rem);
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 0.92;
   color: var(--navy);
-  margin-bottom: var(--space-10);
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity var(--dur-xl) var(--ease-silk),
-    transform var(--dur-xl) var(--ease-silk);
-  transition-delay: 300ms;
+  transform: translateY(100%);
+  transition: transform var(--dur-lg) var(--ease-editorial);
+  display: block;
 }
 
 .nameVisible {
-  opacity: 1;
   transform: translateY(0);
+}
+
+.nameInner {
+  display: inline-block;
+  position: relative;
+  background: var(--navy);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.foilActive {
+  background: linear-gradient(110deg, var(--navy) 0%, var(--navy) 40%, rgba(201, 174, 114, 0.8) 50%, var(--navy) 60%, var(--navy) 100%);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: foilShine 1.2s var(--ease-editorial) forwards;
+  animation-delay: 800ms; /* wait for name reveal */
+}
+
+@keyframes foilShine {
+  0% { background-position: 100% 0; }
+  100% { background-position: -50% 0; }
 }
 
 [dir="rtl"] .name {
@@ -191,9 +240,19 @@
   font-weight: 400;
   line-height: 1.65;
   color: var(--navy);
-  opacity: 0.65;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-md) var(--ease-editorial),
+    transform var(--dur-md) var(--ease-editorial);
+  transition-delay: 400ms;
   max-width: 42ch;
   margin-bottom: var(--space-12);
+}
+
+.statementVisible {
+  opacity: 0.65;
+  transform: translateY(0);
 }
 
 [dir="rtl"] .statement {

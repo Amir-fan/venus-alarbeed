@@ -1,4 +1,8 @@
 import { dict, type Locale } from '@/lib/i18n';
+import NewRayHero from '@/components/newray/NewRayHero';
+import NewRayWidening from '@/components/newray/NewRayWidening';
+import NewRayRelationship from '@/components/newray/NewRayRelationship';
+import NewRayTransition from '@/components/newray/NewRayTransition';
 import styles from './page.module.css';
 
 interface Props {
@@ -9,7 +13,7 @@ export async function generateMetadata({ params }: Props) {
   const { lang } = (await params) as { lang: Locale };
   const d = dict[lang];
   return {
-    title: d.nav.newRay,
+    title: d.newray.label,
     description: d.newray.body,
   };
 }
@@ -20,21 +24,17 @@ export default async function TheNewRayPage({ params }: Props) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.lightRay} aria-hidden="true" />
-      
-      <div className={styles.hero}>
-        <div className={styles.content}>
-          <p className={styles.label}>{d.newray.label}</p>
-          <h1 className={styles.heading}>{d.newray.heading}</h1>
-          <p className={styles.body}>{d.newray.body}</p>
-        </div>
-      </div>
+      {/* 1. Hero */}
+      <NewRayHero d={d} />
 
-      <div className={styles.distinctionSection}>
-        <div className={styles.glassCard}>
-          <p className={styles.distinction}>{d.newray.distinction}</p>
-        </div>
-      </div>
+      {/* 2. Word-highlight distinction text */}
+      <NewRayWidening d={d} />
+
+      {/* 3. CD vs NR panels + question index (merged) */}
+      <NewRayRelationship d={d} />
+
+      {/* 4. Transition to Elara Vega */}
+      <NewRayTransition lang={lang} d={d} />
     </div>
   );
 }

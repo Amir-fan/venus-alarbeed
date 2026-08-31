@@ -85,7 +85,7 @@ export default function WaitlistModal({ isOpen, onClose, d }: Props) {
             <h2 className={styles.heading}>{d.waitlist.heading}</h2>
             <p className={styles.body}>{d.waitlist.body}</p>
 
-            <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            <form className={styles.form} onSubmit={handleSubmit}>
               <input
                 type="text"
                 className={styles.input}
@@ -110,6 +110,7 @@ export default function WaitlistModal({ isOpen, onClose, d }: Props) {
                 placeholder={d.waitlist.phonePlaceholder}
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                required
                 aria-label={d.waitlist.phonePlaceholder}
               />
               <button
