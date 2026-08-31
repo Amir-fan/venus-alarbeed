@@ -1,0 +1,130 @@
+.section {
+  background: var(--mist);
+  border-top: 1px solid rgba(17, 28, 45, 0.07);
+  position: relative;
+  overflow: hidden;
+}
+
+/* The Ray */
+.rayContainer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ray {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: -10%;
+  width: 120%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(142, 169, 184, 0.0) 10%,
+    rgba(142, 169, 184, 0.25) 35%,
+    rgba(201, 174, 114, 0.15) 55%,
+    rgba(142, 169, 184, 0.0) 85%,
+    transparent 100%
+  );
+  transform: rotate(-8deg) translateY(-50%);
+  animation: rayDrift 8s ease-in-out infinite alternate;
+}
+
+@keyframes rayDrift {
+  from {
+    transform: rotate(-8deg) translateY(-50%) translateX(0);
+    opacity: 0.6;
+  }
+  to {
+    transform: rotate(-6deg) translateY(calc(-50% + 20px)) translateX(2%);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ray {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-20);
+    align-items: start;
+  }
+}
+
+/* Left */
+.heading {
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--navy);
+  margin-top: var(--space-8);
+}
+
+[dir="rtl"] .heading {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: clamp(1.375rem, 3.5vw, 2.25rem);
+  line-height: 1.45;
+}
+
+/* Right */
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-top: var(--space-2);
+}
+
+.body {
+  color: var(--navy);
+  opacity: 0.65;
+}
+
+.distinction {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--navy);
+  opacity: 0.45;
+  font-style: italic;
+}
+
+[dir="rtl"] .distinction {
+  font-family: var(--font-ar);
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.facebookLink {}
+
+.fbLink {
+  color: var(--navy);
+  opacity: 0.5;
+}
+
+.fbLink:hover {
+  opacity: 0.9;
+}
+
+[dir="rtl"] .fbLink {
+  font-family: var(--font-ar);
+  font-size: 0.875rem;
+}

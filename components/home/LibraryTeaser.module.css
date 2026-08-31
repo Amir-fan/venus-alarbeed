@@ -1,0 +1,124 @@
+.section {
+  background: var(--ivory);
+  border-top: 1px solid rgba(17, 28, 45, 0.07);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.header {
+  max-width: 620px;
+}
+
+.heading {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--navy);
+  margin-bottom: var(--space-6);
+}
+
+[dir="rtl"] .heading {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+  line-height: 1.2;
+}
+
+.body {
+  color: var(--navy);
+  opacity: 0.55;
+}
+
+/* Archive layout */
+.archive {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(17, 28, 45, 0.1);
+}
+
+.archiveRow {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: var(--space-8);
+  padding-block: var(--space-6);
+  border-bottom: 1px solid rgba(17, 28, 45, 0.07);
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .archiveRow {
+    grid-template-columns: 160px 1fr;
+  }
+}
+
+.archiveCategory {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.35;
+}
+
+[dir="rtl"] .archiveCategory {
+  letter-spacing: 0;
+  font-size: 0.75rem;
+  font-family: var(--font-ar);
+}
+
+.archiveItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.archiveItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border: 1px solid rgba(17, 28, 45, 0.12);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--navy);
+  opacity: 0.7;
+  transition:
+    border-color var(--dur-sm) var(--ease-out),
+    opacity var(--dur-sm) var(--ease-out),
+    background var(--dur-sm) var(--ease-out);
+}
+
+.archiveItem:hover {
+  border-color: var(--navy);
+  opacity: 1;
+  background: rgba(17, 28, 45, 0.03);
+}
+
+[dir="rtl"] .archiveItem {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: 0.875rem;
+}
+
+.archiveArrow {
+  font-size: 0.625rem;
+  opacity: 0.4;
+  transition: opacity var(--dur-sm) var(--ease-out);
+}
+
+.archiveItem:hover .archiveArrow {
+  opacity: 0.8;
+}
+
+.cta {
+  color: var(--navy);
+  border-color: rgba(17, 28, 45, 0.25);
+  align-self: flex-start;
+}

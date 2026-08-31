@@ -1,0 +1,257 @@
+.section {
+  background: var(--navy);
+  color: var(--ivory);
+  padding-block: var(--space-24) var(--space-32);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-block: var(--space-40);
+  }
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-16);
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--space-8);
+}
+
+@media (min-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-20);
+    align-items: start;
+  }
+}
+
+@media (min-width: 1200px) {
+  .inner {
+    padding-inline: var(--space-20);
+  }
+}
+
+/* Left */
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--aurora);
+  flex-shrink: 0;
+}
+
+.sLabel {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aurora);
+  opacity: 0.7;
+}
+
+[dir="rtl"] .sLabel {
+  letter-spacing: 0;
+  font-size: 0.75rem;
+  font-family: var(--font-ar);
+}
+
+.heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ivory);
+  opacity: 0.9;
+}
+
+[dir="rtl"] .heading {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  line-height: 1.2;
+}
+
+/* Reasons */
+.reasons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.reason {
+  font-size: 0.8125rem;
+  color: var(--ivory);
+  opacity: 0.35;
+  padding-inline-start: var(--space-5);
+  position: relative;
+}
+
+.reason::before {
+  content: '—';
+  position: absolute;
+  inset-inline-start: 0;
+  opacity: 0.3;
+  font-size: 0.625rem;
+}
+
+[dir="rtl"] .reason {
+  font-family: var(--font-ar);
+  font-size: 0.875rem;
+  padding-inline-start: 0;
+  padding-inline-end: var(--space-5);
+}
+
+[dir="rtl"] .reason::before {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+/* Direct links */
+.directLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+.orText {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--ivory);
+  opacity: 0.3;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .orText {
+  letter-spacing: 0;
+  font-size: 0.8125rem;
+  font-family: var(--font-ar);
+}
+
+.waBtn {
+  gap: var(--space-3);
+  font-size: 0.6875rem;
+}
+
+.socialRow {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.socialBtn {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--ivory);
+  opacity: 0.3;
+  border: 1px solid rgba(245, 242, 234, 0.12);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition: opacity var(--dur-sm) var(--ease-out), border-color var(--dur-sm) var(--ease-out);
+}
+
+.socialBtn:hover {
+  opacity: 0.7;
+  border-color: rgba(245, 242, 234, 0.3);
+}
+
+/* Right — form */
+.right {}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.field {}
+
+.input {
+  width: 100%;
+  background: rgba(245, 242, 234, 0.05);
+  border: 1px solid rgba(245, 242, 234, 0.1);
+  border-radius: 2px;
+  color: var(--ivory);
+  font-family: var(--font-en);
+  font-size: 0.9375rem;
+  padding: var(--space-4) var(--space-5);
+  outline: none;
+  transition:
+    border-color var(--dur-sm) var(--ease-out),
+    background var(--dur-sm) var(--ease-out);
+  appearance: none;
+}
+
+[dir="rtl"] .input {
+  font-family: var(--font-ar);
+  font-size: 1rem;
+}
+
+.input::placeholder {
+  color: rgba(245, 242, 234, 0.3);
+  font-weight: 300;
+}
+
+.input:focus {
+  border-color: rgba(201, 174, 114, 0.5);
+  background: rgba(245, 242, 234, 0.08);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.submitBtn {
+  align-self: flex-start;
+  margin-top: var(--space-3);
+  min-width: 120px;
+  justify-content: center;
+}
+
+/* Success */
+.successMsg {
+  padding: var(--space-12) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  animation: fadeInUp 0.6s var(--ease-silk) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.successIcon {
+  margin-bottom: var(--space-2);
+}
+
+.successText {
+  font-size: 1.125rem;
+  color: var(--ivory);
+  opacity: 0.8;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+[dir="rtl"] .successText {
+  font-family: var(--font-ar);
+  font-size: 1.125rem;
+}

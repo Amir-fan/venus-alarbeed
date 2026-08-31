@@ -1,0 +1,239 @@
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: var(--ivory);
+  padding-block: var(--space-32) var(--space-12);
+}
+
+.watermark {
+  position: absolute;
+  bottom: -5%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28vw;
+  font-weight: 300;
+  line-height: 0.8;
+  color: var(--gold);
+  opacity: 0.05;
+  white-space: nowrap;
+  pointer-events: none;
+  font-family: var(--font-en);
+  letter-spacing: -0.04em;
+}
+
+.glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at bottom, rgba(142, 169, 184, 0.15), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--space-8);
+}
+
+@media (min-width: 1200px) {
+  .inner {
+    padding-inline: var(--space-20);
+  }
+}
+
+/* Top */
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+@media (min-width: 768px) {
+  .top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 360px;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ivory);
+}
+
+[dir="rtl"] .name {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: 1.375rem;
+}
+
+.tagline {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.85;
+}
+
+[dir="rtl"] .tagline {
+  letter-spacing: 0;
+  font-size: 0.75rem;
+}
+
+.statement {
+  font-size: 0.875rem;
+  color: var(--ivory);
+  opacity: 0.4;
+  margin-top: var(--space-2);
+  font-style: italic;
+}
+
+[dir="rtl"] .statement {
+  font-style: normal;
+  font-size: 0.9375rem;
+}
+
+/* Nav */
+.nav {}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: end;
+}
+
+@media (max-width: 767px) {
+  .navList {
+    text-align: start;
+  }
+}
+
+[dir="rtl"] .navList {
+  text-align: start;
+}
+
+@media (min-width: 768px) {
+  [dir="rtl"] .navList {
+    text-align: end;
+  }
+}
+
+.navLink {
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  opacity: 0.45;
+  transition: opacity var(--dur-sm) var(--ease-out);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-md) var(--ease-silk);
+}
+
+.navLink:hover {
+  opacity: 1;
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+[dir="rtl"] .navLink {
+  letter-spacing: 0;
+  font-size: 0.8125rem;
+  font-family: var(--font-ar);
+}
+
+/* Divider */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--ivory);
+  opacity: 0.1;
+  margin-block: var(--space-12);
+}
+
+/* Bottom */
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  .bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.copyright {
+  font-size: 0.6875rem;
+  opacity: 0.3;
+  letter-spacing: 0.06em;
+}
+
+[dir="rtl"] .copyright {
+  letter-spacing: 0;
+  font-size: 0.8125rem;
+}
+
+/* Social */
+.social {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ivory);
+  opacity: 0.35;
+  transition: opacity var(--dur-sm) var(--ease-out);
+  border: 1px solid rgba(245, 242, 234, 0.15);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.socialLink:hover {
+  opacity: 0.8;
+  border-color: rgba(245, 242, 234, 0.35);
+}

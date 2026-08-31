@@ -1,0 +1,251 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ivory);
+  overflow: hidden;
+}
+
+.geometry {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.geoLine1 {
+  position: absolute;
+  top: 20%;
+  inset-inline-end: -10%;
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(to left, transparent, rgba(201, 174, 114, 0.15), transparent);
+  transform: rotate(-12deg);
+}
+
+.geoLine2 {
+  position: absolute;
+  bottom: 30%;
+  inset-inline-start: -5%;
+  width: 40%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(17, 28, 45, 0.06), transparent);
+  transform: rotate(6deg);
+}
+
+.geoCircle {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 10%;
+  width: 480px;
+  height: 480px;
+  border: 1px solid rgba(17, 28, 45, 0.04);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+/* Main layout */
+.inner {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  max-width: 1280px;
+  margin-inline: auto;
+  width: 100%;
+  padding-inline: var(--space-8);
+  padding-block: 120px var(--space-20);
+  gap: var(--space-16);
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-20);
+    align-items: center;
+  }
+}
+
+@media (min-width: 1200px) {
+  .inner {
+    padding-inline: var(--space-20);
+    grid-template-columns: 5fr 4fr;
+  }
+}
+
+/* Content — first on mobile, order-aware */
+.content {
+  order: 1;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--dur-lg) var(--ease-silk),
+    transform var(--dur-lg) var(--ease-silk);
+  transition-delay: 200ms;
+}
+
+.content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  .content {
+    order: 0;
+  }
+}
+
+/* Portrait */
+.portrait {
+  order: 0;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--dur-xl) var(--ease-silk),
+    transform var(--dur-xl) var(--ease-silk);
+  transition-delay: 100ms;
+}
+
+.portrait.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  .portrait {
+    order: 1;
+  }
+}
+
+.portraitPlaceholder {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  max-height: 560px;
+  background: var(--mist);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portraitImg {
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+.portraitLabel {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.25;
+}
+
+/* Tagline */
+.taglineWrap {
+  margin-bottom: var(--space-8);
+}
+
+.tagline {
+  color: var(--gold);
+  opacity: 0.85;
+}
+
+/* Name */
+.name {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: var(--navy);
+  margin-bottom: var(--space-10);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-xl) var(--ease-silk),
+    transform var(--dur-xl) var(--ease-silk);
+  transition-delay: 300ms;
+}
+
+.nameVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[dir="rtl"] .name {
+  font-family: var(--font-ar);
+  font-size: clamp(3rem, 9vw, 7rem);
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
+/* Statement */
+.statement {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--navy);
+  opacity: 0.65;
+  max-width: 42ch;
+  margin-bottom: var(--space-12);
+}
+
+[dir="rtl"] .statement {
+  font-family: var(--font-ar);
+  font-size: clamp(1.0625rem, 2vw, 1.1875rem);
+}
+
+/* CTA */
+.cta {}
+
+.ctaBtn {
+  color: var(--navy);
+  border-color: rgba(17, 28, 45, 0.3);
+}
+
+.ctaBtn:hover {
+  background: var(--navy);
+  color: var(--ivory);
+  border-color: var(--navy);
+}
+
+/* Scroll indicator */
+.scrollIndicator {
+  position: absolute;
+  bottom: var(--space-10);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity var(--dur-lg) var(--ease-out);
+  transition-delay: 1200ms;
+}
+
+.scrollVisible {
+  opacity: 1;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--navy), transparent);
+  opacity: 0.2;
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(1); }
+  50% { opacity: 0.4; transform: scaleY(0.6); }
+}
+
+[dir="rtl"] .scrollIndicator {
+  transform: translateX(50%);
+}

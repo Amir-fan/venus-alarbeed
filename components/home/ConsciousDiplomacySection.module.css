@@ -1,0 +1,239 @@
+.section {
+  background: var(--ivory-dim);
+  border-top: 1px solid rgba(17, 28, 45, 0.07);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+/* Header */
+.header {
+  max-width: 720px;
+}
+
+.heading {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--navy);
+  margin-bottom: var(--space-8);
+}
+
+[dir="rtl"] .heading {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.25;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+}
+
+.headingAccent {
+  color: var(--navy);
+  opacity: 0.5;
+}
+
+.body {
+  color: var(--navy);
+  opacity: 0.65;
+  max-width: 58ch;
+}
+
+/* Questions */
+.questions {
+  background: var(--mist);
+  border-radius: var(--radius-md);
+  padding: var(--space-8) var(--space-10);
+  max-width: 600px;
+}
+
+.questionIntro {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.4;
+  margin-bottom: var(--space-4);
+}
+
+[dir="rtl"] .questionIntro {
+  letter-spacing: 0;
+  font-size: 0.8125rem;
+  font-family: var(--font-ar);
+}
+
+.questionMain {
+  font-size: 1.375rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+  margin-bottom: var(--space-4);
+}
+
+[dir="rtl"] .questionMain {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: 1.25rem;
+}
+
+.questionExpand {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--navy);
+  opacity: 0.65;
+}
+
+[dir="rtl"] .questionExpand {
+  font-family: var(--font-ar);
+  font-size: 1.25rem;
+}
+
+/* Capabilities — vertical connected system */
+.capabilities {
+  border-top: 1px solid rgba(17, 28, 45, 0.08);
+  padding-top: var(--space-20);
+}
+
+.capabilitiesTrack {
+  display: flex;
+  flex-direction: column;
+}
+
+.capability {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--space-8);
+  padding-block: var(--space-8);
+  border-bottom: 1px solid rgba(17, 28, 45, 0.06);
+  transition: opacity var(--dur-sm) var(--ease-out);
+}
+
+.capability:last-child {
+  border-bottom: none;
+}
+
+.capability:hover {
+  opacity: 0.7;
+}
+
+/* Left — number + connector */
+.capLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-2);
+}
+
+.capNum {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+[dir="rtl"] .capNum {
+  letter-spacing: 0;
+}
+
+.capConnector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 8px;
+}
+
+.capDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(17, 28, 45, 0.4);
+  flex-shrink: 0;
+}
+
+.capLine {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(17, 28, 45, 0.2), transparent);
+  min-height: 32px;
+}
+
+/* Right — content */
+.capRight {
+  padding-block: var(--space-1);
+}
+
+.capName {
+  display: block;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+  margin-bottom: var(--space-4);
+}
+
+[dir="rtl"] .capName {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: clamp(1.25rem, 2.5vw, 2.25rem);
+}
+
+.capDesc {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--navy);
+  opacity: 0.6;
+  max-width: 600px;
+}
+
+[dir="rtl"] .capDesc {
+  font-family: var(--font-ar);
+  font-size: 0.875rem;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  align-items: flex-start;
+}
+
+@media (min-width: 640px) {
+  .footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* AI tag */
+.aiTag {
+  border: 1px solid rgba(17, 28, 45, 0.14);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-5);
+}
+
+.aiLabel {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.45;
+}
+
+[dir="rtl"] .aiLabel {
+  letter-spacing: 0;
+  font-size: 0.6875rem;
+  font-family: var(--font-ar);
+}
+
+.cta {
+  color: var(--navy);
+  border-color: rgba(17, 28, 45, 0.25);
+}
