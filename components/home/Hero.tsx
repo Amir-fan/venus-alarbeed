@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import portraitImg from '@/public/venus_portrait.png';
 import type { Locale, Dict } from '@/lib/i18n';
 import styles from './Hero.module.css';
 
@@ -33,7 +34,7 @@ export default function Hero({ lang, d }: Props) {
         <div className={`${styles.portrait} ${mounted ? styles.visible : ''}`} aria-hidden="true">
           <div className={styles.portraitPlaceholder}>
             <Image
-              src="/venus_portrait.png"
+              src={portraitImg}
               alt="Venus Alarbeed Portrait"
               fill
               className={styles.portraitImg}
