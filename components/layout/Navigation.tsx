@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Form from 'next/form';
 import Image from 'next/image';
 import logoImg from '@/public/venuslogo.jpeg';
 import { usePathname } from 'next/navigation';
@@ -22,6 +21,7 @@ export default function Navigation({ lang, d }: Props) {
   const otherLang = lang === 'en' ? 'ar' : 'en';
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
+  const searchAction = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/${lang}/search${process.env.NEXT_PUBLIC_STATIC_PAGE_EXTENSION ?? ''}`;
 
   // Remove the current language from the pathname to get the clean route
   // e.g. "/en/conscious-diplomacy" -> "/conscious-diplomacy"
@@ -91,7 +91,7 @@ export default function Navigation({ lang, d }: Props) {
           <div className={styles.controls}>
             {/* Search Bar */}
             <div className={styles.searchContainer}>
-              <Form action={`/${lang}/search/`} className={styles.searchForm} role="search">
+              <form action={searchAction} className={styles.searchForm} role="search">
                 <input
                   type="search"
                   name="q"
@@ -110,7 +110,7 @@ export default function Navigation({ lang, d }: Props) {
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                   </svg>
                 </button>
-              </Form>
+              </form>
             </div>
 
             {/* Language Selector Dropdown */}
@@ -182,7 +182,7 @@ export default function Navigation({ lang, d }: Props) {
         aria-hidden={!menuOpen}
       >
         <div className={styles.mobileInner}>
-          <Form action={`/${lang}/search/`} className={styles.mobileSearch} role="search">
+          <form action={searchAction} className={styles.mobileSearch} role="search">
             <input
               type="search"
               name="q"
@@ -196,7 +196,7 @@ export default function Navigation({ lang, d }: Props) {
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
             </button>
-          </Form>
+          </form>
           <ul className={styles.mobileLinks} role="list">
             {links.map((link, i) => (
               <li key={link.href} style={{ '--i': i } as React.CSSProperties}>

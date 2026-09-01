@@ -32,6 +32,12 @@ jobs:
         run: npm ci
       - name: Build with Next.js
         run: npm run build
+      - name: Verify GitHub Pages search routes
+        run: |
+          test -f out/en/search.html
+          test -f out/ar/search.html
+          grep -q 'action="/venus-alarbeed/en/search.html"' out/en.html
+          grep -q 'action="/venus-alarbeed/ar/search.html"' out/ar.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -2,7 +2,6 @@
 
 import { useMemo } from 'react';
 import Link from 'next/link';
-import Form from 'next/form';
 import { useSearchParams } from 'next/navigation';
 import type { Locale } from '@/lib/i18n';
 import { getSearchEntries } from '@/lib/siteSearch';
@@ -26,6 +25,7 @@ export default function SearchView({ lang }: Props) {
   const searchParams = useSearchParams();
   const query = searchParams.get('q')?.trim().slice(0, 80) ?? '';
   const isAr = lang === 'ar';
+  const searchAction = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/${lang}/search${process.env.NEXT_PUBLIC_STATIC_PAGE_EXTENSION ?? ''}`;
 
   const results = useMemo(() => {
     const terms = normalize(query).split(' ').filter(Boolean);
@@ -61,7 +61,7 @@ export default function SearchView({ lang }: Props) {
           {isAr ? 'البحث' : 'Search'}
         </h1>
 
-        <Form action={`/${lang}/search/`} className={styles.searchForm} role="search">
+        <form action={searchAction} className={styles.searchForm} role="search">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -76,7 +76,7 @@ export default function SearchView({ lang }: Props) {
             maxLength={80}
           />
           <button type="submit">{isAr ? 'بحث' : 'Search'}</button>
-        </Form>
+        </form>
 
         <div className={styles.rule} />
 
