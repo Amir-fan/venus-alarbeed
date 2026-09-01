@@ -7,6 +7,7 @@ import logoImg from '@/public/venuslogo.jpeg';
 import { usePathname } from 'next/navigation';
 import type { Locale } from '@/lib/i18n';
 import type { Dict } from '@/lib/i18n';
+import { submitSearch } from '@/lib/searchRoute';
 import styles from './Navigation.module.css';
 
 interface Props {
@@ -91,7 +92,7 @@ export default function Navigation({ lang, d }: Props) {
           <div className={styles.controls}>
             {/* Search Bar */}
             <div className={styles.searchContainer}>
-              <form action={searchAction} className={styles.searchForm} role="search">
+              <form action={searchAction} onSubmit={(event) => submitSearch(event, lang)} className={styles.searchForm} role="search">
                 <input
                   type="search"
                   name="q"
@@ -182,7 +183,7 @@ export default function Navigation({ lang, d }: Props) {
         aria-hidden={!menuOpen}
       >
         <div className={styles.mobileInner}>
-          <form action={searchAction} className={styles.mobileSearch} role="search">
+          <form action={searchAction} onSubmit={(event) => submitSearch(event, lang)} className={styles.mobileSearch} role="search">
             <input
               type="search"
               name="q"
