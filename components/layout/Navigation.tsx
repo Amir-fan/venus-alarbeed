@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Form from 'next/form';
 import Image from 'next/image';
 import logoImg from '@/public/venuslogo.jpeg';
 import { usePathname } from 'next/navigation';
@@ -90,7 +91,7 @@ export default function Navigation({ lang, d }: Props) {
           <div className={styles.controls}>
             {/* Search Bar */}
             <div className={styles.searchContainer}>
-              <form action={`/${lang}/search`} className={styles.searchForm} role="search">
+              <Form action={`/${lang}/search/`} className={styles.searchForm} role="search">
                 <input
                   type="search"
                   name="q"
@@ -109,7 +110,7 @@ export default function Navigation({ lang, d }: Props) {
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                   </svg>
                 </button>
-              </form>
+              </Form>
             </div>
 
             {/* Language Selector Dropdown */}
@@ -181,7 +182,7 @@ export default function Navigation({ lang, d }: Props) {
         aria-hidden={!menuOpen}
       >
         <div className={styles.mobileInner}>
-          <form action={`/${lang}/search`} className={styles.mobileSearch} role="search">
+          <Form action={`/${lang}/search/`} className={styles.mobileSearch} role="search">
             <input
               type="search"
               name="q"
@@ -195,7 +196,7 @@ export default function Navigation({ lang, d }: Props) {
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
             </button>
-          </form>
+          </Form>
           <ul className={styles.mobileLinks} role="list">
             {links.map((link, i) => (
               <li key={link.href} style={{ '--i': i } as React.CSSProperties}>

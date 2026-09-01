@@ -15,6 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = (await params) as { lang: Locale };
   const d = dict[lang];
+  const basePath = process.env.GITHUB_ACTIONS === 'true' ? '/venus-alarbeed' : '';
   return {
     title: {
       default: "Venus Alarbeed",
@@ -22,9 +23,9 @@ export async function generateMetadata({
     },
     description: d.hero.statement,
     icons: {
-      icon: [{ url: '/venuslogo.jpeg', type: 'image/jpeg' }],
-      shortcut: '/venuslogo.jpeg',
-      apple: '/venuslogo.jpeg',
+      icon: [{ url: `${basePath}/venuslogo.jpeg`, type: 'image/jpeg' }],
+      shortcut: `${basePath}/venuslogo.jpeg`,
+      apple: `${basePath}/venuslogo.jpeg`,
     },
     openGraph: {
       title: "Venus Alarbeed",

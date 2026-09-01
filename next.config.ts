@@ -5,6 +5,7 @@ const isGithubPages = process.env.GITHUB_ACTIONS === 'true';
 const nextConfig: NextConfig = {
   output: "export",
   basePath: isGithubPages ? "/venus-alarbeed" : "",
+  trailingSlash: true,
   images: {
     unoptimized: true,
     formats: ["image/avif", "image/webp"],
