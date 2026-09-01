@@ -4,7 +4,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - var(--space-6));
-  max-width: 1280px;
+  max-width: 1440px;
   z-index: 100;
   border-radius: 9999px;
   background: rgba(245, 242, 234, 0.4);
@@ -41,7 +41,8 @@
 @media (min-width: 1024px) {
   .inner {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: clamp(0.75rem, 1.4vw, 1.5rem);
   }
 }
 
@@ -50,6 +51,34 @@
   justify-self: start;
   z-index: 1;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.logoMark {
+  width: 42px;
+  height: 42px;
+  padding: 3px;
+  border-radius: 13px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(17, 28, 45, 0.08);
+  box-shadow: 0 5px 16px rgba(17, 28, 45, 0.11);
+  transition: transform var(--dur-sm) var(--ease-silk), box-shadow var(--dur-sm) var(--ease-out);
+}
+
+.logo:hover .logoMark,
+.logo:focus-visible .logoMark {
+  transform: translateY(-1px) rotate(-1.5deg);
+  box-shadow: 0 8px 20px rgba(17, 28, 45, 0.15);
+}
+
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 9px;
 }
 
 .logoName {
@@ -63,6 +92,12 @@
 @media (min-width: 768px) {
   .logoName {
     font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .logoName {
+    display: none;
   }
 }
 
@@ -83,7 +118,7 @@
   display: none;
   align-items: center;
   justify-self: center;
-  gap: var(--space-8);
+  gap: clamp(0.6rem, 1.2vw, 1.75rem);
 }
 
 @media (min-width: 1024px) {
@@ -93,7 +128,7 @@
 }
 
 .link {
-  font-size: 0.75rem;
+  font-size: clamp(0.625rem, 0.7vw, 0.75rem);
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -145,6 +180,92 @@
   .controls {
     gap: var(--space-6);
   }
+}
+
+/* Search Bar */
+.searchContainer {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .searchContainer {
+    display: block;
+  }
+}
+
+.searchForm {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  background: rgba(17, 28, 45, 0.03);
+  border: 1px solid rgba(17, 28, 45, 0.1);
+  padding: 6px 14px 6px 32px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: var(--navy);
+  width: 40px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.searchInput:focus {
+  width: 176px;
+  background: white;
+  border-color: var(--gold);
+  box-shadow: 0 4px 12px rgba(201, 174, 114, 0.15);
+}
+
+.searchInput::placeholder {
+  color: var(--navy);
+  opacity: 0;
+  transition: opacity var(--dur-sm) var(--ease-out);
+}
+
+.searchInput:focus::placeholder {
+  opacity: 0.4;
+}
+
+@media (min-width: 1280px) {
+  .searchInput {
+    width: 112px;
+  }
+
+  .searchInput::placeholder {
+    opacity: 0.4;
+  }
+}
+
+.searchBtn {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.searchBtn:hover {
+  opacity: 1;
+}
+
+[dir="rtl"] .searchInput {
+  padding: 6px 32px 6px 14px;
+}
+
+[dir="rtl"] .searchBtn {
+  left: auto;
+  right: 10px;
 }
 
 .langSwitch {
@@ -318,8 +439,54 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-12);
+  gap: var(--space-10);
   text-align: center;
+  width: min(88vw, 420px);
+}
+
+.mobileSearch {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(17, 28, 45, 0.14);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.56);
+  padding-inline: var(--space-5) var(--space-3);
+  transition: border-color var(--dur-sm) var(--ease-out), box-shadow var(--dur-sm) var(--ease-out);
+}
+
+.mobileSearch:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 8px 28px rgba(17, 28, 45, 0.08);
+}
+
+.mobileSearch input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  color: var(--navy);
+  background: transparent;
+  padding-block: var(--space-4);
+  font: inherit;
+}
+
+.mobileSearch input::placeholder {
+  color: rgba(17, 28, 45, 0.42);
+}
+
+.mobileSearch button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: var(--navy);
+  border-radius: 50%;
+}
+
+.mobileSearch button:hover,
+.mobileSearch button:focus-visible {
+  background: rgba(17, 28, 45, 0.06);
 }
 
 .mobileLinks {

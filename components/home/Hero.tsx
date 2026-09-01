@@ -1,31 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import portraitImg from '@/public/venus_portrait.png';
-import type { Locale, Dict } from '@/lib/i18n';
+import type { Dict } from '@/lib/i18n';
+import { useRevealGroup } from '@/hooks/useReveal';
 import styles from './Hero.module.css';
 
 interface Props {
-  lang: Locale;
   d: Dict;
 }
 
-export default function Hero({ lang, d }: Props) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 80);
-    return () => clearTimeout(t);
-  }, []);
+export default function Hero({ d }: Props) {
+  const ref = useRevealGroup<HTMLElement>();
 
   return (
-    <section className={styles.hero} aria-label="Hero">
+    <section ref={ref} className={styles.hero} aria-label="Hero">
       {/* Subtle background geometry */}
       <div className={styles.geometry} aria-hidden="true">
         <div className={styles.geoLine1}>
-          <div className={`${styles.geoLightPoint} ${mounted ? styles.geoLightActive : ''}`} />
+          <div className={`${styles.geoLightPoint} ${styles.geoLightActive}`} />
         </div>
         <div className={styles.geoLine2} />
         <div className={styles.geoCircle} />
@@ -33,8 +26,10 @@ export default function Hero({ lang, d }: Props) {
 
       <div className={styles.inner}>
         {/* Portrait */}
-        <div className={`${styles.portrait} ${mounted ? styles.visible : ''}`} aria-hidden="true">
-          <div className={styles.portraitPlaceholder}>
+        <div className={styles.portrait} aria-hidden="true">
+          <div className="mask-reveal-wrap">
+            <div className={`mask-reveal ${styles.portraitReveal}`}>
+              <div className={styles.portraitPlaceholder}>
             <Image
               src={portraitImg}
               alt="Venus Alarbeed Portrait"
@@ -42,18 +37,22 @@ export default function Hero({ lang, d }: Props) {
               className={styles.portraitImg}
               priority
             />
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className={`${styles.content} ${mounted ? styles.visible : ''}`}>
-          <div className={styles.taglineWrap}>
-            <span className={`t-label ${styles.tagline}`}>{d.hero.tagline}</span>
+        <div className={styles.content}>
+          <div className={`${styles.taglineWrap} mask-reveal-wrap`}>
+            <span className={`t-label ${styles.tagline} mask-reveal reveal-delay-1`}>
+              {d.hero.tagline}
+            </span>
           </div>
 
-          <h1 className={styles.nameWrap}>
-            <span className={`${styles.name} ${mounted ? styles.nameVisible : ''}`}>
-              <span className={`${styles.nameInner} ${mounted ? styles.foilActive : ''}`}>
+          <h1 className={`${styles.nameWrap} mask-reveal-wrap`}>
+            <span className={`mask-reveal reveal-delay-2 ${styles.name}`}>
+              <span className={styles.nameInner}>
                 {d.hero.nameFirst}
                 <br />
                 {d.hero.nameLast}
@@ -61,9 +60,11 @@ export default function Hero({ lang, d }: Props) {
             </span>
           </h1>
 
-          <p className={`${styles.statement} ${mounted ? styles.statementVisible : ''}`}>{d.hero.statement}</p>
+          <p className={`${styles.statement} quiet-reveal reveal-delay-3`}>
+            {d.hero.statement}
+          </p>
 
-          <div className={styles.cta}>
+          <div className={`quiet-reveal reveal-delay-4 ${styles.cta}`}>
             <a href="#question" className={`btn btn-ghost ${styles.ctaBtn}`}>
               {d.hero.cta}
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -75,7 +76,7 @@ export default function Hero({ lang, d }: Props) {
       </div>
 
       {/* Scroll indicator */}
-      <div className={`${styles.scrollIndicator} ${mounted ? styles.scrollVisible : ''}`} aria-hidden="true">
+      <div className={`${styles.scrollIndicator} quiet-reveal reveal-delay-5`} aria-hidden="true">
         <div className={styles.scrollLine} />
       </div>
     </section>

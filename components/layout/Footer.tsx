@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import logoImg from '@/public/venuslogo.jpeg';
 import type { Locale } from '@/lib/i18n';
 import type { Dict } from '@/lib/i18n';
 import DevTag from './DevTag';
@@ -61,7 +63,18 @@ export default function Footer({ lang, d }: Props) {
         {/* Top row */}
         <div className={styles.top}>
           <div className={styles.identity}>
-            <span className={styles.name}>{d.hero.nameFirst} {d.hero.nameLast}</span>
+            <div className={styles.brandRow}>
+              <Link href={`/${lang}`} className={styles.logo} aria-label={`${d.hero.nameFirst} ${d.hero.nameLast}`}>
+                <Image
+                  src={logoImg}
+                  alt=""
+                  width={76}
+                  height={76}
+                  className={styles.logoImage}
+                />
+              </Link>
+              <span className={styles.name}>{d.hero.nameFirst} {d.hero.nameLast}</span>
+            </div>
             <span className={styles.tagline}>{d.footer.tagline}</span>
             <p className={styles.statement}>{d.footer.statement}</p>
           </div>

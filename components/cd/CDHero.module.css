@@ -62,8 +62,34 @@
   color: var(--navy);
   opacity: 0.7;
   max-width: 38ch;
+  margin-bottom: var(--space-8);
 }
 
 [dir="rtl"] .body {
   font-family: var(--font-ar);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+}
+
+.igLinkWrap {
+  margin-top: var(--space-6);
+}
+
+.igLink {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-ar);
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  opacity: 0.8;
+  color: var(--navy);
+  transition: opacity 0.2s;
+}
+
+.igIcon {
+  margin-inline-end: var(--space-2);
+  flex: 0 0 auto;
+}
+
+.igLink:hover {
+  opacity: 1;
 }

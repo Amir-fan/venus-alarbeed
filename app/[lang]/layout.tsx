@@ -21,6 +21,11 @@ export async function generateMetadata({
       template: "%s — Venus Alarbeed",
     },
     description: d.hero.statement,
+    icons: {
+      icon: [{ url: '/venuslogo.jpeg', type: 'image/jpeg' }],
+      shortcut: '/venuslogo.jpeg',
+      apple: '/venuslogo.jpeg',
+    },
     openGraph: {
       title: "Venus Alarbeed",
       description: d.hero.statement,

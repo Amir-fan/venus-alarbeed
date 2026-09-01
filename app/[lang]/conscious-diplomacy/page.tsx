@@ -29,7 +29,7 @@ export default async function ConsciousDiplomacyPage({ params }: Props) {
   return (
     <div className={styles.page}>
       {/* 1. The Proposition */}
-      <CDHero d={d} />
+      <CDHero lang={lang} d={d} />
 
       {/* 2. Transition from surface to depth */}
       <CDQuestions d={d} />

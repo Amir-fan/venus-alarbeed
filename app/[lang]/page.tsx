@@ -19,7 +19,7 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <>
-      <Hero lang={lang} d={d} />
+      <Hero d={d} />
       <WhoIsVenus lang={lang} d={d} />
       <TheQuestion d={d} />
       <TheVision d={d} />

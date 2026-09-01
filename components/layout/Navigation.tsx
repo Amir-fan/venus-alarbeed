@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import logoImg from '@/public/venuslogo.jpeg';
 import { usePathname } from 'next/navigation';
 import type { Locale } from '@/lib/i18n';
 import type { Dict } from '@/lib/i18n';
@@ -60,6 +62,16 @@ export default function Navigation({ lang, d }: Props) {
         <div className={styles.inner}>
           {/* Logo */}
           <Link href={`/${lang}`} className={styles.logo} onClick={() => setMenuOpen(false)}>
+            <span className={styles.logoMark}>
+              <Image
+                src={logoImg}
+                alt=""
+                width={42}
+                height={42}
+                className={styles.logoImage}
+                priority
+              />
+            </span>
             <span className={styles.logoName}>{d.hero.nameFirst} {d.hero.nameLast}</span>
           </Link>
 
@@ -76,6 +88,30 @@ export default function Navigation({ lang, d }: Props) {
 
           {/* Right controls */}
           <div className={styles.controls}>
+            {/* Search Bar */}
+            <div className={styles.searchContainer}>
+              <form action={`/${lang}/search`} className={styles.searchForm} role="search">
+                <input
+                  type="search"
+                  name="q"
+                  placeholder={lang === 'ar' ? 'بحث...' : 'Search...'}
+                  className={styles.searchInput}
+                  aria-label={lang === 'ar' ? 'البحث في الموقع' : 'Search the website'}
+                  maxLength={80}
+                />
+                <button
+                  type="submit"
+                  className={styles.searchBtn}
+                  aria-label={lang === 'ar' ? 'إرسال البحث' : 'Submit search'}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </button>
+              </form>
+            </div>
+
             {/* Language Selector Dropdown */}
             {langOpen && (
               <div 
@@ -145,6 +181,21 @@ export default function Navigation({ lang, d }: Props) {
         aria-hidden={!menuOpen}
       >
         <div className={styles.mobileInner}>
+          <form action={`/${lang}/search`} className={styles.mobileSearch} role="search">
+            <input
+              type="search"
+              name="q"
+              placeholder={lang === 'ar' ? 'ابحث في الموقع...' : 'Search the website...'}
+              aria-label={lang === 'ar' ? 'البحث في الموقع' : 'Search the website'}
+              maxLength={80}
+            />
+            <button type="submit" aria-label={lang === 'ar' ? 'إرسال البحث' : 'Submit search'}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+          </form>
           <ul className={styles.mobileLinks} role="list">
             {links.map((link, i) => (
               <li key={link.href} style={{ '--i': i } as React.CSSProperties}>
