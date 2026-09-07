@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 import type { Locale, Dict } from '@/lib/i18n';
 import { useRevealGroup } from '@/hooks/useReveal';
-import WaitlistModal from '@/components/ui/WaitlistModal';
 import styles from './TheBook.module.css';
 
 interface Props {
@@ -13,15 +12,13 @@ interface Props {
 
 export default function TheBook({ lang, d }: Props) {
   const ref = useRevealGroup<HTMLElement>();
-  const [waitlistOpen, setWaitlistOpen] = useState(false);
 
   return (
-    <>
-      <section
-        ref={ref}
-        className={`${styles.section} section`}
-        aria-labelledby="book-heading"
-      >
+    <section
+      ref={ref}
+      className={`${styles.section} section`}
+      aria-labelledby="book-heading"
+    >
         <div className={`container ${styles.inner}`}>
 
           {/* Book object */}
@@ -56,22 +53,12 @@ export default function TheBook({ lang, d }: Props) {
             </p>
 
             <div className={`${styles.actions} quiet-reveal reveal-delay-3`}>
-              <button
-                onClick={() => setWaitlistOpen(true)}
-                className={`btn ${styles.buyBtn}`}
-              >
+              <Link href={`/${lang}/book`} className={`btn ${styles.buyBtn}`}>
                 {d.book.ctaBuy} →
-              </button>
+              </Link>
             </div>
           </div>
         </div>
-      </section>
-
-      <WaitlistModal
-        isOpen={waitlistOpen}
-        onClose={() => setWaitlistOpen(false)}
-        d={d}
-      />
-    </>
+    </section>
   );
 }

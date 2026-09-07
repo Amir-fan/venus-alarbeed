@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
+import Image from 'next/image';
 import type { Locale, Dict } from '@/lib/i18n';
 import { useRevealGroup } from '@/hooks/useReveal';
-import { useState } from 'react';
-import WaitlistModal from '@/components/ui/WaitlistModal';
+import englishCover from '@/public/conscious-diplomacy-en-cover.jpg';
+import arabicCover from '@/public/conscious-diplomacy-ar-cover.jpg';
 import styles from './CDBook.module.css';
 
 interface Props {
@@ -13,7 +15,6 @@ interface Props {
 
 export default function CDBook({ lang, d }: Props) {
   const ref = useRevealGroup<HTMLElement>();
-  const [waitlistOpen, setWaitlistOpen] = useState(false);
   const isAr = d.hero.nameFirst === 'فينوس';
 
   return (
@@ -37,29 +38,24 @@ export default function CDBook({ lang, d }: Props) {
           </p>
 
           <div className={`quiet-reveal reveal-delay-4 ${styles.actions}`}>
-            <button onClick={() => setWaitlistOpen(true)} className="btn btn-outline">
+            <Link href={`/${lang}/book`} className="btn btn-outline">
               {d.book.ctaBuy}
-            </button>
+            </Link>
           </div>
         </div>
 
         <div className={`${styles.visual} quiet-reveal reveal-delay-2`}>
-          {/* We will use a placeholder styling since there is no real image provided yet, but keep the standard book aspect ratio. */}
           <div className={styles.bookMockup}>
-            <div className={styles.bookCover}>
-              <span className={styles.bookTitle}>{d.book.title}</span>
-              <span className={styles.bookAuthor}>{d.hero.nameFirst} {d.hero.nameLast}</span>
-            </div>
+            <Image
+              src={isAr ? arabicCover : englishCover}
+              alt={d.book.title}
+              className={styles.bookCoverImage}
+              sizes="(max-width: 899px) 75vw, 360px"
+            />
           </div>
         </div>
 
       </div>
-
-      <WaitlistModal 
-        isOpen={waitlistOpen}
-        onClose={() => setWaitlistOpen(false)}
-        d={d}
-      />
     </section>
   );
 }

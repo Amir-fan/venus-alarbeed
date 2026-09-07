@@ -76,6 +76,12 @@ export function getSearchEntries(lang: Locale): SearchEntry[] {
       d.book.body,
       d.notes.sampleNotes.map(({ text }) => text),
     ]),
+    entry('/book', d.book.title, d.book.body, [
+      d.book.label,
+      d.book.ctaBuy,
+      'digital book PDF Sham Cash $2.99 purchase receipt',
+      'كتاب رقمي شراء شام كاش إيصال 2.99 دولار',
+    ]),
     entry('/contact', d.nav.contact, d.contact.heading, [
       d.contact.label,
       d.contact.reasons,
@@ -83,4 +89,3 @@ export function getSearchEntries(lang: Locale): SearchEntry[] {
     ]),
   ];
 }
-

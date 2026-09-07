@@ -29,7 +29,7 @@ export default async function LibraryPage({ params }: Props) {
       <LibraryHero d={d} />
       <LibraryCategories d={d} />
       <LibraryFeatured d={d} />
-      <LibraryBook d={d} />
+      <LibraryBook lang={lang} d={d} />
       <LibraryNotes d={d} />
     </div>
   );

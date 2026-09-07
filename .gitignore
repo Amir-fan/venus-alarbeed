@@ -32,6 +32,13 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# private paid book files must never be committed
+/private-books/
+/server-data/
+/server/.env
+/tmp/
 
 # vercel
 .vercel

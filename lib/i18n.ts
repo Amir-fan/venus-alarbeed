@@ -110,7 +110,7 @@ export const dict = {
       title: 'Conscious Diplomacy',
       body: 'This book examines the human being inside the diplomatic room. Not a collection of rules. Not awareness as a separate idea. But the practitioner — how they show up, how they read, how they use power, how they negotiate, how they represent, and what they leave behind.',
       ctaExplore: 'Explore the Book',
-      ctaBuy: 'Pre-order',
+      ctaBuy: 'Buy the digital book',
     },
     notes: {
       label: 'Venus Notes',
@@ -277,7 +277,7 @@ export const dict = {
       title: 'الدبلوماسية الواعية',
       body: 'يبحث هذا الكتاب في الإنسان الموجود داخل الغرفة الدبلوماسية. ليس مجموعة قواعد. وليس الوعي فكرة منفصلة. بل الممارس — كيف يحضر، كيف يقرأ، كيف يستخدم القوة، كيف يتفاوض، كيف يمثل، وما الذي يتركه خلفه.',
       ctaExplore: 'استكشف الكتاب',
-      ctaBuy: 'سجّل اهتمامك',
+      ctaBuy: 'اشترِ الكتاب الرقمي',
     },
     notes: {
       label: 'ملاحظات فينوس',

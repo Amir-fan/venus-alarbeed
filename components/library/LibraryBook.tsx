@@ -1,14 +1,19 @@
 'use client';
 
-import type { Dict } from '@/lib/i18n';
+import Image from 'next/image';
+import Link from 'next/link';
+import type { Dict, Locale } from '@/lib/i18n';
 import { useRevealGroup } from '@/hooks/useReveal';
+import englishCover from '@/public/conscious-diplomacy-en-cover.jpg';
+import arabicCover from '@/public/conscious-diplomacy-ar-cover.jpg';
 import styles from './LibraryBook.module.css';
 
 interface Props {
+  lang: Locale;
   d: Dict;
 }
 
-export default function LibraryBook({ d }: Props) {
+export default function LibraryBook({ lang, d }: Props) {
   const ref = useRevealGroup<HTMLElement>();
   const isAr = d.hero.nameFirst === 'فينوس';
 
@@ -33,23 +38,23 @@ export default function LibraryBook({ d }: Props) {
           </p>
 
           <div className={`quiet-reveal reveal-delay-4 ${styles.actions}`}>
-            <button className={styles.cta}>
+            <Link href={`/${lang}/conscious-diplomacy`} className={styles.cta}>
               {d.book.ctaExplore}
-            </button>
+            </Link>
             <span className={styles.divider}>/</span>
-            <button className={styles.cta}>
+            <Link href={`/${lang}/book`} className={styles.cta}>
               {d.book.ctaBuy} <span className={styles.arrow} aria-hidden="true">→</span>
-            </button>
+            </Link>
           </div>
         </div>
 
-        {/* Empty space ready for book cover art */}
         <div className={`quiet-reveal reveal-delay-2 ${styles.visual}`}>
-          <div className={styles.placeholder}>
-            <span className={styles.placeholderText}>
-              {isAr ? 'الغلاف قريباً' : 'COVER PREVIEW'}
-            </span>
-          </div>
+          <Image
+            src={isAr ? arabicCover : englishCover}
+            alt={d.book.title}
+            className={styles.cover}
+            sizes="(max-width: 767px) 75vw, 400px"
+          />
         </div>
 
       </div>

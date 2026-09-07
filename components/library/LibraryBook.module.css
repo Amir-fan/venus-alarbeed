@@ -131,9 +131,6 @@
 /* ── Visual Placeholder ── */
 .visual {
   width: 100%;
-  aspect-ratio: 3/4;
-  background: rgba(245, 242, 234, 0.03);
-  border: 1px solid rgba(245, 242, 234, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,16 +147,13 @@
   }
 }
 
-.placeholderText {
-  font-size: 0.5rem;
-  letter-spacing: 0.2em;
-  color: var(--ivory);
-  opacity: 0.2;
-  text-transform: uppercase;
+.cover {
+  width: min(100%, 390px);
+  height: auto;
+  box-shadow: -22px 28px 60px rgba(0, 0, 0, 0.34);
+  transform: perspective(1100px) rotateY(-7deg);
 }
 
-[dir="rtl"] .placeholderText {
-  letter-spacing: 0;
-  font-family: var(--font-ar);
-  font-size: 0.6rem;
+[dir="rtl"] .cover {
+  transform: perspective(1100px) rotateY(7deg);
 }
