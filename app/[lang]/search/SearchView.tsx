@@ -24,7 +24,7 @@ function normalize(value: string) {
 
 export default function SearchView({ lang }: Props) {
   const searchParams = useSearchParams();
-  const query = searchParams.get('q')?.trim().slice(0, 80) ?? '';
+  const query = searchParams?.get('q')?.trim().slice(0, 80) ?? '';
   const isAr = lang === 'ar';
   const searchAction = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/${lang}/search${process.env.NEXT_PUBLIC_STATIC_PAGE_EXTENSION ?? ''}`;
 

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createAccessPass, createBookLinks, signPayload, verifyToken } from './index.mjs';
+import { createAccessPass, createBookLinks, signPayload, verifyToken } from './access-tokens.mjs';
 
 process.env.BOOK_TOKEN_SECRET = 'test-only-secret-longer-than-thirty-two-characters';
 process.env.BOOK_ACCESS_TTL_DAYS = '365';
@@ -22,8 +22,7 @@ test('creates a long-lived access pass that restores the same edition', () => {
 });
 
 test('exchanges an entitlement for short-lived reading and download links', () => {
-  const request = { protocol: 'https', get: () => 'checkout.example.com' };
-  const links = createBookLinks(request, entitlement);
+  const links = createBookLinks('https://checkout.example.com', entitlement);
   const readToken = new URL(links.readUrl).searchParams.get('token');
   const downloadUrl = new URL(links.downloadUrl);
 

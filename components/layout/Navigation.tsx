@@ -22,7 +22,7 @@ export default function Navigation({ lang, d }: Props) {
   const [hasBookAccess, setHasBookAccess] = useState(false);
   const otherLang = lang === 'en' ? 'ar' : 'en';
   const navRef = useRef<HTMLElement>(null);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? `/${lang}`;
   const searchAction = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/${lang}/search${process.env.NEXT_PUBLIC_STATIC_PAGE_EXTENSION ?? ''}`;
 
   // Remove the current language from the pathname to get the clean route

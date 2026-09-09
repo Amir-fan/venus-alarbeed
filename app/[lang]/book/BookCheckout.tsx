@@ -34,8 +34,9 @@ interface VerificationResponse {
 }
 
 const SHAM_CASH_ADDRESS = '6ee6937181709f3f0b3b2e6adb0b415c';
-const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const MAX_FILE_BYTES = 4 * 1024 * 1024;
 const ACCESS_STORAGE_KEY = 'venus-book-access-v1';
+const VERIFICATION_ENDPOINT = process.env.NEXT_PUBLIC_RECEIPT_VERIFY_URL || '/api/verify-receipt';
 
 type StoredAccess = Partial<Record<Locale, string>>;
 
@@ -60,7 +61,7 @@ function removeStoredAccess(edition: Locale) {
 }
 
 function refreshEndpoint(verificationEndpoint: string) {
-  return new URL('refresh-book-access', verificationEndpoint).toString();
+  return new URL('../refresh-book-access', new URL(verificationEndpoint, window.location.origin)).toString();
 }
 
 const copy = {
@@ -83,7 +84,7 @@ const copy = {
     receipt: '03 — Upload your receipt',
     automatic: 'Private OCR check',
     upload: 'Choose a receipt image or PDF',
-    formats: 'JPG, PNG, WEBP or PDF · maximum 10 MB',
+    formats: 'JPG, PNG, WEBP or PDF · maximum 4 MB',
     replace: 'Choose a different file',
     confirm: 'I confirm that I made this payment to Venus Alarbeed and that this receipt has not been used before.',
     submit: 'Verify receipt & unlock book',
@@ -100,7 +101,7 @@ const copy = {
     retry: 'Try another receipt',
     privacy: 'No AI service and no database are used. The receipt is read by OCR on the private checkout server, held only in memory during the check, and then discarded.',
     config: 'Automatic verification is not connected yet. Add the verification endpoint during deployment.',
-    invalidFile: 'Please upload a JPG, PNG, WEBP or PDF smaller than 10 MB.',
+    invalidFile: 'Please upload a JPG, PNG, WEBP or PDF smaller than 4 MB.',
     failed: 'We could not verify this receipt. Please check the file and try again.',
   },
   ar: {
@@ -122,7 +123,7 @@ const copy = {
     receipt: '03 — ارفع إيصالك',
     automatic: 'فحص OCR خاص',
     upload: 'اختر صورة الإيصال أو ملف PDF',
-    formats: 'JPG أو PNG أو WEBP أو PDF · بحد أقصى 10 ميغابايت',
+    formats: 'JPG أو PNG أو WEBP أو PDF · بحد أقصى 4 ميغابايت',
     replace: 'اختر ملفاً آخر',
     confirm: 'أؤكد أنني أجريت هذا الدفع إلى فينوس العربيد وأن هذا الإيصال لم يُستخدم من قبل.',
     submit: 'تحقق من الإيصال وافتح الكتاب',
@@ -139,7 +140,7 @@ const copy = {
     retry: 'جرّب إيصالاً آخر',
     privacy: 'لا نستخدم خدمة ذكاء اصطناعي ولا قاعدة بيانات. يقرأ خادم الدفع الخاص الإيصال عبر OCR في الذاكرة فقط ثم يتخلص منه بعد الفحص.',
     config: 'لم يتم ربط خدمة التحقق التلقائي بعد. أضف رابط الخدمة عند النشر.',
-    invalidFile: 'يرجى رفع JPG أو PNG أو WEBP أو PDF بحجم أقل من 10 ميغابايت.',
+    invalidFile: 'يرجى رفع JPG أو PNG أو WEBP أو PDF بحجم أقل من 4 ميغابايت.',
     failed: 'تعذر التحقق من هذا الإيصال. تحقق من الملف وحاول مرة أخرى.',
   },
 } as const;
@@ -167,8 +168,7 @@ export default function BookCheckout({ lang, d }: Props) {
   }, [status, t.checking.length]);
 
   const restoreAccess = useCallback(async (editionToRestore: Locale, accessPass: string) => {
-    const endpoint = process.env.NEXT_PUBLIC_RECEIPT_VERIFY_URL;
-    if (!endpoint) return;
+    const endpoint = VERIFICATION_ENDPOINT;
 
     setStatus('restoring');
     setMessage('');
@@ -246,12 +246,7 @@ export default function BookCheckout({ lang, d }: Props) {
       return;
     }
 
-    const endpoint = process.env.NEXT_PUBLIC_RECEIPT_VERIFY_URL;
-    if (!endpoint) {
-      setStatus('error');
-      setMessage(t.config);
-      return;
-    }
+    const endpoint = VERIFICATION_ENDPOINT;
 
     const form = new FormData(event.currentTarget);
     form.set('receipt', receipt);

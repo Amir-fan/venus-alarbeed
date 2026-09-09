@@ -10,11 +10,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "checkout-server": "node server/index.mjs",
+    "checkout-server": "node server/start.mjs",
+    "upload:books": "node scripts/upload-books-to-vercel.mjs",
     "test:receipt": "node --test server/receipt-parser.test.mjs server/access-tokens.test.mjs"
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.8",
+    "@tesseract.js-data/ara": "^1.0.0",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "@vercel/blob": "^2.8.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "framer-motion": "^13.1.1",

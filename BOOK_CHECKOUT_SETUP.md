@@ -1,101 +1,104 @@
-# Sham Cash OCR book checkout
+# Vercel checkout deployment
 
-The checkout pages are `/en/book` and `/ar/book`. The public website can stay on GitHub Pages, while the small Node server in `server/` privately checks receipts and serves the paid PDFs.
+The website and private Sham Cash checkout can run together as one Next.js project on Vercel. The same repository still supports a static GitHub Pages build, but GitHub Pages must call the Vercel API because Pages cannot run OCR or protect paid files.
 
-This version uses:
+The checkout uses:
 
-- No OpenAI or other AI API.
-- No database.
-- Local Tesseract OCR on the checkout server.
-- Deterministic receipt rules written in code.
-- Private PDF files that never enter `public/`, the Git repository, or the GitHub Pages artifact.
-- A signed browser access pass so a buyer can return without uploading the receipt again.
+- Local Tesseract OCR inside a Node.js Vercel Function; no AI API.
+- Bundled English and Arabic language data, so OCR does not download models during a cold start.
+- Deterministic checks for Sham Cash, recipient Venus Alarbeed, account ending `4742`, USD, and an amount of `$2.99`, `$3.00`, or `$3.10`.
+- Signed 365-day browser access passes and fresh 30-minute book links.
+- Private Vercel Blob storage for both paid books; no database.
 
-## What is checked
+The transaction date is extracted for display when readable but is not used for approval.
 
-The server accepts a JPG, PNG, WEBP, or one-page PDF up to 10 MB. It renders image-only PDFs, reads English and Arabic text with Tesseract, and then requires:
+## 1. Import the repository into Vercel
 
-- Sham Cash branding and a Send transaction.
-- Venus Alarbeed as the recipient in English or Arabic.
-- Recipient account ending `4742`.
-- Either `$2.99 USD`, `$3.00 USD`, or `$3.10 USD`.
-- Enough readable receipt fields and an acceptable OCR confidence score.
+Create a Vercel project from this GitHub repository and keep the **Next.js** framework preset. No custom build or output-directory setting is needed.
 
-The transaction date is extracted for display when readable, but it is not used to approve or reject a receipt.
+The configuration automatically behaves differently by host:
 
-The two supplied `$150` examples are useful rejection tests. They should not unlock a book because their recipient, account, and amount do not match the sale.
+- Vercel receives the normal Next.js build and the `/api/*` functions.
+- GitHub Actions receives the static `out/` export with the existing `/venus-alarbeed` base path.
 
-## 1. Put the books on the private server
+## 2. Add the environment variables
 
-Create `private-books/` beside `server/` and copy the two complete books using these exact names:
+In Vercel, open **Project Settings → Environment Variables** and add:
 
-| Edition | Private filename |
-| --- | --- |
-| English | `conscious-diplomacy-en.pdf` |
-| Arabic | `conscious-diplomacy-ar.pdf` |
+```text
+BOOK_TOKEN_SECRET=<a stable random secret of at least 32 characters>
+BOOK_EN_BLOB_PATH=books/conscious-diplomacy-en.pdf
+BOOK_AR_BLOB_PATH=books/conscious-diplomacy-ar.pdf
+RECEIPT_EXPECTED_ACCOUNT_SUFFIX=4742
+RECEIPT_ALLOWED_AMOUNTS=2.99,3.00,3.10
+BOOK_LINK_TTL_SECONDS=1800
+BOOK_ACCESS_TTL_DAYS=365
+MAX_ATTEMPTS_PER_HOUR=6
+```
 
-That folder is ignored by Git. Upload it directly to the private server or mount it as a private persistent disk. Never put the books under `public/`.
+`RECEIPT_EXPECTED_RECIPIENTS` may be left unset to use the built-in English and Arabic Venus Alarbeed names.
 
-## 2. Configure the receipt server
+Do not add `NEXT_PUBLIC_RECEIPT_VERIFY_URL` on Vercel. The browser will automatically use the same-origin `/api/verify-receipt` endpoint.
 
-Create `server/.env` from `server/.env.example`, then set a long random `BOOK_TOKEN_SECRET`. Load those environment variables through the hosting provider or the shell before starting the server.
+Keep `BOOK_TOKEN_SECRET` stable after launch. Replacing it invalidates all saved buyer access passes.
 
-Keep `BOOK_TOKEN_SECRET` stable and private. Changing it immediately invalidates every buyer's saved access pass. `BOOK_ACCESS_TTL_DAYS` controls how long access is remembered and defaults to 365 days. The short read/download URLs still expire after 30 minutes and are refreshed from the saved pass whenever the buyer returns.
+## 3. Create private book storage
 
-The server needs Node.js 22.13 or newer and runs with:
+In the Vercel project, open **Storage**, create a **Blob** store with **Private** access, and connect it to this project. Vercel adds `BLOB_READ_WRITE_TOKEN` automatically.
+
+Pull or copy that token into the local environment, then upload the two ignored files from `private-books/`:
 
 ```bash
-npm ci
-npm run checkout-server
+npm run upload:books
 ```
 
-The first OCR run downloads and caches the official Tesseract English and Arabic language data under `server-data/tessdata`. This is local OCR data, not a remote receipt-analysis service.
+The script uploads these exact private paths:
 
-The default health endpoint is:
+| Edition | Blob path |
+| --- | --- |
+| English | `books/conscious-diplomacy-en.pdf` |
+| Arabic | `books/conscious-diplomacy-ar.pdf` |
 
-```text
-http://localhost:8787/health
-```
+The paid PDFs remain excluded from Git, `public/`, and the static deployment artifact.
 
-## 3. Connect GitHub Pages
+## 4. Deploy and test
 
-Deploy the checkout server at a public HTTPS address such as `https://checkout.example.com`.
+Redeploy after adding the variables and Blob store. Then test:
 
-In the GitHub repository, create an Actions variable named `NEXT_PUBLIC_RECEIPT_VERIFY_URL` with:
+- `/api/verify-receipt` accepts the supplied real `$3` Venus receipt.
+- A wrong recipient, account, currency, or amount is rejected.
+- Both English and Arabic editions open and download after approval.
+- Closing the page and returning in the same browser restores access through **My Book**.
+- `/api/book/en` and `/api/book/ar` return 403 without a valid short-lived token.
+- A long-lived access pass cannot be used directly as a book URL.
 
-```text
-https://checkout.example.com/verify-receipt
-```
-
-Also include the exact GitHub Pages origin in `ALLOWED_ORIGINS` on the receipt server. Re-run the Pages workflow after saving the variable.
-
-## 4. Test before launch
-
-Run the parser unit tests:
+Local automated checks:
 
 ```bash
 npm run test:receipt
+npm run build
 ```
 
-Then test through the website with:
+Receipt uploads are limited to 4 MB to stay below Vercel's 4.5 MB Function payload limit. The supplied receipt is only about 75 KB.
 
-- A real English receipt paying Venus `$2.99`.
-- A real Arabic receipt paying Venus `$3.00` or `$3.10`.
-- The supplied `$150` image and PDF, which must both be rejected.
-- A receipt for a different recipient or account, which must be rejected.
-- An older receipt with all three required payment fields, which should still be accepted.
-- Both Read in browser and Download PDF after approval.
-- Close the tab, revisit the site, and use **My Book** to confirm that fresh links are created without another upload.
-- Direct access to `/book/en` or `/book/ar` without a signed token, which must return 403.
+## Optional: keep GitHub Pages as the public frontend
 
-## Returning buyers
+After Vercel is deployed, set the GitHub Actions repository variable below:
 
-After a receipt is approved, the server creates a signed access pass for that edition. The website stores it only in that browser's local storage. On a later visit, the checkout page exchanges the pass through `/refresh-book-access` for fresh short-lived Read and Download links. A **My Book** shortcut appears in the navigation and on the book page while access is saved.
+```text
+NEXT_PUBLIC_RECEIPT_VERIFY_URL=https://YOUR-VERCEL-DOMAIN/api/verify-receipt
+```
 
-There is no account and no database. Consequently, access does not automatically move to another browser or device. Clearing browser data also removes the saved pass; in either case, the buyer can upload the same valid receipt again to recover access to the same edition.
+Also set this Vercel environment variable so the cross-origin browser request is allowed:
 
-## Honest security boundary
+```text
+ALLOWED_ORIGINS=https://amir-fan.github.io
+```
 
-OCR can check what a receipt displays, but it cannot prove that Sham Cash actually completed the transfer. A convincingly edited receipt can pass unless Sham Cash provides a transaction-verification API.
+If the entire website moves to Vercel, neither setting is needed.
 
-Because there is no database, used transaction numbers are remembered only in server memory and are lost when the process restarts. Multiple server instances do not share this memory. The browser access pass lasts 365 days by default; its fresh reading/download links expire after 30 minutes. A buyer can still share the pass or downloaded PDF. These are unavoidable limitations of the requested no-database, no-payment-API design.
+## Security boundary
+
+OCR checks what the receipt displays; without a Sham Cash verification API, it cannot prove independently that the transfer settled. A convincingly edited receipt can pass.
+
+Because there is no database, duplicate transaction memory is best-effort per warm Function instance and disappears on restarts or scaling. Saved access is tied to the buyer's browser, not an account. Clearing browser data or changing devices requires uploading the same valid receipt again. Buyers can also share a saved pass or downloaded PDF; preventing that requires accounts and persistent storage.

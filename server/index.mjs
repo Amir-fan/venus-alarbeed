@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import cors from 'cors';
 import express from 'express';
@@ -10,6 +11,7 @@ import multer from 'multer';
 import sharp from 'sharp';
 import { createWorker } from 'tesseract.js';
 import { createCanvas, DOMMatrix, ImageData, Path2D } from '@napi-rs/canvas';
+import { createAccessPass, createBookLinks, getTokenSecret, signPayload, verifyToken } from './access-tokens.mjs';
 import { parseReceiptText, validateReceipt } from './receipt-parser.mjs';
 
 globalThis.DOMMatrix ??= DOMMatrix;
@@ -18,23 +20,14 @@ globalThis.Path2D ??= Path2D;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
-const port = Number(process.env.PORT ?? 8787);
-const maxFileBytes = 10 * 1024 * 1024;
+const maxFileBytes = 4 * 1024 * 1024;
 const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? 'http://localhost:3000,http://127.0.0.1:3000')
   .split(',').map((origin) => origin.trim()).filter(Boolean);
-const bookPaths = {
-  en: path.resolve(process.env.BOOK_EN_PATH ?? path.join(projectRoot, 'private-books', 'conscious-diplomacy-en.pdf')),
-  ar: path.resolve(process.env.BOOK_AR_PATH ?? path.join(projectRoot, 'private-books', 'conscious-diplomacy-ar.pdf')),
-};
-const bookNames = {
-  en: 'Conscious-Diplomacy-English-Venus-Alarbeed.pdf',
-  ar: 'Conscious-Diplomacy-Arabic-Venus-Alarbeed.pdf',
-};
 const messages = {
   en: {
     approved: 'Payment approved. You can now read or download your book.',
     invalid_request: 'Attach a clear receipt and confirm that you made the payment.',
-    invalid_file: 'Upload a clear JPG, PNG, WEBP or one-page PDF receipt smaller than 10 MB.',
+    invalid_file: 'Upload a clear JPG, PNG, WEBP or one-page PDF receipt smaller than 4 MB.',
     too_many_attempts: 'Too many verification attempts. Please wait one hour before trying again.',
     duplicate_receipt: 'This transaction was already used for the other book edition.',
     not_sham_cash: 'The file could not be confirmed as a Sham Cash receipt.',
@@ -46,7 +39,7 @@ const messages = {
   ar: {
     approved: 'تم قبول الدفع. يمكنك الآن قراءة الكتاب أو تنزيله.',
     invalid_request: 'أرفق إيصالاً واضحاً وأكد أنك أجريت عملية الدفع.',
-    invalid_file: 'ارفع إيصال JPG أو PNG أو WEBP أو PDF من صفحة واحدة وبحجم أقل من 10 ميغابايت.',
+    invalid_file: 'ارفع إيصال JPG أو PNG أو WEBP أو PDF من صفحة واحدة وبحجم أقل من 4 ميغابايت.',
     too_many_attempts: 'عدد محاولات التحقق كبير. يرجى الانتظار ساعة قبل المحاولة مجدداً.',
     duplicate_receipt: 'تم استخدام هذه العملية سابقاً لنسخة الكتاب الأخرى.',
     not_sham_cash: 'تعذر التأكد من أن الملف إيصال صادر عن شام كاش.',
@@ -61,64 +54,8 @@ function envList(name, fallback) {
   return (process.env[name] ?? fallback).split('|').map((value) => value.trim()).filter(Boolean);
 }
 
-function getTokenSecret() {
-  const secret = process.env.BOOK_TOKEN_SECRET;
-  if (!secret || secret.length < 32) throw new Error('BOOK_TOKEN_SECRET must contain at least 32 characters.');
-  return secret;
-}
-
-function encodeBase64Url(value) {
-  return Buffer.from(value).toString('base64url');
-}
-
-function signPayload(payload) {
-  const encoded = encodeBase64Url(JSON.stringify(payload));
-  const signature = crypto.createHmac('sha256', getTokenSecret()).update(encoded).digest('base64url');
-  return `${encoded}.${signature}`;
-}
-
-function verifyToken(token, expectedType) {
-  const [encoded, suppliedSignature] = String(token ?? '').split('.');
-  if (!encoded || !suppliedSignature) return null;
-  const expectedSignature = crypto.createHmac('sha256', getTokenSecret()).update(encoded).digest('base64url');
-  const supplied = Buffer.from(suppliedSignature);
-  const expected = Buffer.from(expectedSignature);
-  if (supplied.length !== expected.length || !crypto.timingSafeEqual(supplied, expected)) return null;
-  const payload = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8'));
-  if (!['en', 'ar'].includes(payload.edition) || !Number.isFinite(payload.exp) || payload.exp < Date.now()) return null;
-  if (payload.type !== expectedType) return null;
-  return payload;
-}
-
 function publicServerUrl(request) {
   return (process.env.PUBLIC_SERVER_URL ?? `${request.protocol}://${request.get('host')}`).replace(/\/$/, '');
-}
-
-function createBookLinks(request, entitlement) {
-  const ttlSeconds = Math.min(3600, Math.max(300, Number(process.env.BOOK_LINK_TTL_SECONDS ?? 1800)));
-  const token = signPayload({
-    type: 'book-link',
-    edition: entitlement.edition,
-    exp: Date.now() + ttlSeconds * 1000,
-    tx: entitlement.tx,
-    receipt: entitlement.receipt,
-  });
-  const baseUrl = publicServerUrl(request);
-  const bookUrl = `${baseUrl}/book/${entitlement.edition}?token=${encodeURIComponent(token)}`;
-  return {
-    readUrl: `${bookUrl}&mode=inline`,
-    downloadUrl: `${bookUrl}&mode=download`,
-    expiresIn: ttlSeconds,
-  };
-}
-
-function createAccessPass(entitlement) {
-  const days = Math.min(730, Math.max(1, Number(process.env.BOOK_ACCESS_TTL_DAYS ?? 365)));
-  const expiresAt = Date.now() + days * 24 * 60 * 60 * 1000;
-  return {
-    token: signPayload({ type: 'book-access', ...entitlement, exp: expiresAt }),
-    expiresAt,
-  };
 }
 
 function detectFileType(buffer) {
@@ -190,9 +127,31 @@ async function prepareReceiptImages(buffer, fileType) {
 let workerPromise;
 let ocrQueue = Promise.resolve();
 
+function prepareBundledLanguageData() {
+  const dataDirectory = path.join(os.tmpdir(), 'venus-tessdata-best-int');
+  fs.mkdirSync(dataDirectory, { recursive: true });
+
+  for (const language of ['eng', 'ara']) {
+    const source = path.join(
+      projectRoot,
+      'node_modules',
+      '@tesseract.js-data',
+      language,
+      '4.0.0_best_int',
+      `${language}.traineddata.gz`,
+    );
+    const destination = path.join(dataDirectory, `${language}.traineddata.gz`);
+    if (!fs.existsSync(destination)) fs.copyFileSync(source, destination);
+  }
+
+  return dataDirectory;
+}
+
 function getWorker() {
+  const languagePath = prepareBundledLanguageData();
   workerPromise ??= createWorker('eng+ara', 1, {
-    cachePath: path.resolve(process.env.TESSERACT_CACHE_PATH ?? path.join(projectRoot, 'server-data', 'tessdata')),
+    langPath: languagePath,
+    cachePath: process.env.TESSERACT_CACHE_PATH || languagePath,
   });
   return workerPromise;
 }
@@ -265,7 +224,7 @@ app.get('/health', (_request, response) => {
   response.json({ ok: true, verifier: 'local-tesseract-ocr', database: false });
 });
 
-app.post('/refresh-book-access', (request, response) => {
+app.post(['/refresh-book-access', '/api/refresh-book-access'], (request, response) => {
   const locale = request.body?.uiLanguage === 'ar' ? 'ar' : 'en';
   try {
     const entitlement = verifyToken(request.body?.accessPass, 'book-access');
@@ -285,14 +244,14 @@ app.post('/refresh-book-access', (request, response) => {
       message: locale === 'ar'
         ? 'تمت استعادة نسختك المحفوظة.'
         : 'Your saved book access has been restored.',
-      ...createBookLinks(request, entitlement),
+      ...createBookLinks(publicServerUrl(request), entitlement),
     });
   } catch {
     return response.status(401).json({ approved: false, reasonCode: 'access_expired' });
   }
 });
 
-app.post('/verify-receipt', upload.single('receipt'), async (request, response) => {
+app.post(['/verify-receipt', '/api/verify-receipt'], upload.single('receipt'), async (request, response) => {
   const locale = request.body.uiLanguage === 'ar' ? 'ar' : 'en';
   const edition = request.body.bookLanguage === 'ar' ? 'ar' : 'en';
   const reply = (code, status = 422, extra = {}) => response.status(status).json({
@@ -356,7 +315,7 @@ app.post('/verify-receipt', upload.single('receipt'), async (request, response) 
       message: messages[locale].approved,
       accessPass: accessPass.token,
       accessExpiresAt: new Date(accessPass.expiresAt).toISOString(),
-      ...createBookLinks(request, entitlement),
+      ...createBookLinks(publicServerUrl(request), entitlement),
       receipt: {
         transactionNumber: extracted.transactionNumber,
         amount: extracted.amount,
@@ -371,25 +330,6 @@ app.post('/verify-receipt', upload.single('receipt'), async (request, response) 
   }
 });
 
-app.get('/book/:edition', (request, response) => {
-  try {
-    const payload = verifyToken(request.query.token, 'book-link');
-    if (!payload || payload.edition !== request.params.edition) return response.status(403).send('This book link is invalid or expired.');
-    const bookPath = bookPaths[payload.edition];
-    if (!fs.existsSync(bookPath)) return response.status(503).send('The book file is not installed on the server yet.');
-    const disposition = request.query.mode === 'download' ? 'attachment' : 'inline';
-    response.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `${disposition}; filename="${bookNames[payload.edition]}"`,
-      'Cache-Control': 'private, no-store, max-age=0',
-      'X-Content-Type-Options': 'nosniff',
-    });
-    fs.createReadStream(bookPath).pipe(response);
-  } catch {
-    response.status(403).send('This book link is invalid or expired.');
-  }
-});
-
 app.use((error, _request, response, _next) => {
   void _next;
   if (error instanceof multer.MulterError) {
@@ -399,11 +339,5 @@ app.use((error, _request, response, _next) => {
   return response.status(500).json({ approved: false, reasonCode: 'service_unavailable', message: messages.en.service_unavailable });
 });
 
-if (path.resolve(process.argv[1] ?? '') === fileURLToPath(import.meta.url)) {
-  app.listen(port, () => {
-    getTokenSecret();
-    console.log(`Receipt server listening on port ${port}.`);
-  });
-}
-
-export { createAccessPass, createBookLinks, signPayload, verifyToken };
+export { createAccessPass, createBookLinks, getTokenSecret, signPayload, verifyToken };
+export default app;
