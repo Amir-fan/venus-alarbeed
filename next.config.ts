@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
   ...(isGithubPages ? {} : {
     outputFileTracingIncludes: {
       '/api/verify-receipt': [
+        './node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs',
         './node_modules/@tesseract.js-data/eng/4.0.0_best_int/eng.traineddata.gz',
         './node_modules/@tesseract.js-data/ara/4.0.0_best_int/ara.traineddata.gz',
         './node_modules/tesseract.js-core/**/*',

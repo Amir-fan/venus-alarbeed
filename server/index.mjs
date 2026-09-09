@@ -252,8 +252,8 @@ app.post(['/refresh-book-access', '/api/refresh-book-access'], (request, respons
 });
 
 app.post(['/verify-receipt', '/api/verify-receipt'], upload.single('receipt'), async (request, response) => {
-  const locale = request.body.uiLanguage === 'ar' ? 'ar' : 'en';
-  const edition = request.body.bookLanguage === 'ar' ? 'ar' : 'en';
+  const locale = request.body?.uiLanguage === 'ar' ? 'ar' : 'en';
+  const edition = request.body?.bookLanguage === 'ar' ? 'ar' : 'en';
   const reply = (code, status = 422, extra = {}) => response.status(status).json({
     approved: false,
     reasonCode: code,
@@ -262,7 +262,7 @@ app.post(['/verify-receipt', '/api/verify-receipt'], upload.single('receipt'), a
   });
 
   try {
-    if (!request.file || request.body.confirmation !== 'on') return reply('invalid_request', 400);
+    if (!request.file || request.body?.confirmation !== 'on') return reply('invalid_request', 400);
     if (rateLimited(request.ip ?? 'unknown')) return reply('too_many_attempts', 429);
 
     const fileType = detectFileType(request.file.buffer);
