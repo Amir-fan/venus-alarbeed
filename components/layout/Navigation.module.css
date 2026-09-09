@@ -176,6 +176,41 @@
   gap: var(--space-4);
 }
 
+.bookAccess {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.48rem 0.75rem;
+  border: 1px solid rgba(201, 174, 114, 0.52);
+  border-radius: 9999px;
+  color: var(--navy);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background var(--dur-sm) var(--ease-out), color var(--dur-sm) var(--ease-out), transform var(--dur-sm) var(--ease-out);
+}
+
+.bookAccess:hover,
+.bookAccess:focus-visible {
+  background: var(--navy);
+  color: var(--ivory);
+  transform: translateY(-1px);
+}
+
+@media (min-width: 1280px) {
+  .bookAccess {
+    display: inline-flex;
+  }
+}
+
+[dir="rtl"] .bookAccess {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: 0.78rem;
+}
+
 @media (min-width: 768px) {
   .controls {
     gap: var(--space-6);
@@ -465,6 +500,29 @@
   background: rgba(255, 255, 255, 0.56);
   padding-inline: var(--space-5) var(--space-3);
   transition: border-color var(--dur-sm) var(--ease-out), box-shadow var(--dur-sm) var(--ease-out);
+}
+
+.mobileBookAccess {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0.7rem 1.15rem;
+  border: 1px solid rgba(201, 174, 114, 0.62);
+  border-radius: 9999px;
+  background: rgba(201, 174, 114, 0.1);
+  color: var(--navy);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .mobileBookAccess {
+  font-family: var(--font-ar);
+  font-size: 0.92rem;
+  letter-spacing: 0;
 }
 
 .mobileSearch:focus-within {

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import type { Dict, Locale } from '@/lib/i18n';
 import qrImage from '@/public/shamcash-venus-qr.jpeg';
 import englishCover from '@/public/conscious-diplomacy-en-cover.jpg';
@@ -13,7 +13,7 @@ interface Props {
   d: Dict;
 }
 
-type CheckoutStatus = 'idle' | 'checking' | 'approved' | 'rejected' | 'error';
+type CheckoutStatus = 'idle' | 'checking' | 'restoring' | 'approved' | 'rejected' | 'error';
 
 interface VerificationResponse {
   approved: boolean;
@@ -21,6 +21,8 @@ interface VerificationResponse {
   message?: string;
   readUrl?: string;
   downloadUrl?: string;
+  accessPass?: string;
+  accessExpiresAt?: string;
   expiresIn?: number;
   receipt?: {
     transactionNumber?: string;
@@ -33,6 +35,33 @@ interface VerificationResponse {
 
 const SHAM_CASH_ADDRESS = '6ee6937181709f3f0b3b2e6adb0b415c';
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const ACCESS_STORAGE_KEY = 'venus-book-access-v1';
+
+type StoredAccess = Partial<Record<Locale, string>>;
+
+function readStoredAccess(): StoredAccess {
+  try {
+    return JSON.parse(window.localStorage.getItem(ACCESS_STORAGE_KEY) ?? '{}') as StoredAccess;
+  } catch {
+    return {};
+  }
+}
+
+function storeAccess(edition: Locale, accessPass: string) {
+  window.localStorage.setItem(ACCESS_STORAGE_KEY, JSON.stringify({ ...readStoredAccess(), [edition]: accessPass }));
+  window.dispatchEvent(new Event('venus-book-access-changed'));
+}
+
+function removeStoredAccess(edition: Locale) {
+  const stored = readStoredAccess();
+  delete stored[edition];
+  window.localStorage.setItem(ACCESS_STORAGE_KEY, JSON.stringify(stored));
+  window.dispatchEvent(new Event('venus-book-access-changed'));
+}
+
+function refreshEndpoint(verificationEndpoint: string) {
+  return new URL('refresh-book-access', verificationEndpoint).toString();
+}
 
 const copy = {
   en: {
@@ -60,7 +89,11 @@ const copy = {
     submit: 'Verify receipt & unlock book',
     checking: ['Reading the receipt with OCR…', 'Checking the payment fields…', 'Creating your private book link…'],
     approved: 'Payment approved',
-    ready: 'Your private download is ready. The link expires shortly, so save the book now.',
+    ready: 'Your book is ready and access is saved in this browser. Fresh reading and download links will be created whenever you return.',
+    restored: 'Your saved book access has been restored.',
+    restoring: 'Restoring your saved book access…',
+    restoreFailed: 'Saved access could not be restored right now. Try My Book again or upload the receipt.',
+    myBook: 'My Book',
     read: 'Read in browser',
     download: 'Download PDF',
     rejected: 'Receipt not approved',
@@ -95,7 +128,11 @@ const copy = {
     submit: 'تحقق من الإيصال وافتح الكتاب',
     checking: ['جارٍ قراءة الإيصال عبر OCR…', 'جارٍ التحقق من بيانات الدفع…', 'جارٍ إنشاء رابط الكتاب الخاص…'],
     approved: 'تم قبول الدفع',
-    ready: 'نسختك الخاصة جاهزة. تنتهي صلاحية الرابط قريباً، لذا احفظ الكتاب الآن.',
+    ready: 'كتابك جاهز وتم حفظ الوصول في هذا المتصفح. سيتم إنشاء روابط قراءة وتنزيل جديدة عند عودتك.',
+    restored: 'تمت استعادة الوصول المحفوظ إلى كتابك.',
+    restoring: 'جارٍ استعادة الوصول المحفوظ إلى كتابك…',
+    restoreFailed: 'تعذرت استعادة الوصول المحفوظ الآن. حاول من زر كتابي أو ارفع الإيصال.',
+    myBook: 'كتابي',
     read: 'قراءة في المتصفح',
     download: 'تنزيل PDF',
     rejected: 'لم يتم قبول الإيصال',
@@ -116,6 +153,7 @@ export default function BookCheckout({ lang, d }: Props) {
   const [result, setResult] = useState<VerificationResponse | null>(null);
   const [checkingStep, setCheckingStep] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [hasSavedAccess, setHasSavedAccess] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -127,6 +165,53 @@ export default function BookCheckout({ lang, d }: Props) {
 
     return () => window.clearInterval(timer);
   }, [status, t.checking.length]);
+
+  const restoreAccess = useCallback(async (editionToRestore: Locale, accessPass: string) => {
+    const endpoint = process.env.NEXT_PUBLIC_RECEIPT_VERIFY_URL;
+    if (!endpoint) return;
+
+    setStatus('restoring');
+    setMessage('');
+    setResult(null);
+
+    try {
+      const response = await fetch(refreshEndpoint(endpoint), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accessPass, uiLanguage: lang }),
+      });
+      const payload = (await response.json()) as VerificationResponse;
+      if (!response.ok || !payload.approved || !payload.downloadUrl) {
+        removeStoredAccess(editionToRestore);
+        setHasSavedAccess(false);
+        setStatus('idle');
+        setMessage('');
+        return;
+      }
+
+      setHasSavedAccess(true);
+      setResult(payload);
+      setMessage(payload.message ?? t.restored);
+      setStatus('approved');
+    } catch {
+      setHasSavedAccess(true);
+      setStatus('idle');
+      setMessage(t.restoreFailed);
+    }
+  }, [lang, t.restoreFailed, t.restored]);
+
+  useEffect(() => {
+    const accessPass = readStoredAccess()[edition];
+    if (!accessPass) return;
+    let cancelled = false;
+
+    void Promise.resolve().then(() => {
+      if (cancelled) return;
+      setHasSavedAccess(true);
+      return restoreAccess(edition, accessPass);
+    });
+    return () => { cancelled = true; };
+  }, [edition, restoreAccess]);
 
   const validateFile = (file: File) => {
     const allowed = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
@@ -182,6 +267,11 @@ export default function BookCheckout({ lang, d }: Props) {
       const response = await fetch(endpoint, { method: 'POST', body: form });
       const payload = (await response.json()) as VerificationResponse;
 
+      if (payload.approved && payload.accessPass) {
+        storeAccess(edition, payload.accessPass);
+        setHasSavedAccess(true);
+      }
+
       setResult(payload);
       setMessage(payload.message ?? (payload.approved ? t.ready : t.failed));
       setStatus(payload.approved && payload.downloadUrl ? 'approved' : 'rejected');
@@ -199,6 +289,21 @@ export default function BookCheckout({ lang, d }: Props) {
     if (fileRef.current) fileRef.current.value = '';
   };
 
+  const changeEdition = (nextEdition: Locale) => {
+    setEdition(nextEdition);
+    setReceipt(null);
+    setResult(null);
+    setMessage('');
+    setStatus('idle');
+    setHasSavedAccess(Boolean(readStoredAccess()[nextEdition]));
+    if (fileRef.current) fileRef.current.value = '';
+  };
+
+  const openMyBook = () => {
+    const accessPass = readStoredAccess()[edition];
+    if (accessPass) void restoreAccess(edition, accessPass);
+  };
+
   const editions = [
     { id: 'en' as const, label: t.english, pages: 261, cover: englishCover },
     { id: 'ar' as const, label: t.arabic, pages: 258, cover: arabicCover },
@@ -211,6 +316,11 @@ export default function BookCheckout({ lang, d }: Props) {
           <div className={styles.eyebrow}><span />{t.eyebrow}</div>
           <h1>{t.title}</h1>
           <p>{t.intro}</p>
+          {hasSavedAccess && (
+            <button className={styles.myBook} type="button" onClick={openMyBook}>
+              {t.myBook} →
+            </button>
+          )}
           <div className={styles.price}><span>$</span>2.99 <small>USD</small></div>
         </div>
       </header>
@@ -229,7 +339,7 @@ export default function BookCheckout({ lang, d }: Props) {
                   name="edition"
                   value={item.id}
                   checked={edition === item.id}
-                  onChange={() => setEdition(item.id)}
+                  onChange={() => changeEdition(item.id)}
                 />
                 <Image src={item.cover} alt="" className={styles.cover} sizes="(max-width: 600px) 38vw, 150px" />
                 <span className={styles.editionCopy}>
@@ -266,7 +376,7 @@ export default function BookCheckout({ lang, d }: Props) {
           </div>
         </section>
 
-        <section className={styles.section} aria-labelledby="receipt-heading">
+        <section id="my-book" className={styles.section} aria-labelledby="receipt-heading">
           <div className={styles.sectionHeading}>
             <h2 id="receipt-heading">{t.receipt}</h2>
             <span>{t.automatic}</span>
@@ -299,11 +409,11 @@ export default function BookCheckout({ lang, d }: Props) {
             </div>
           )}
 
-          {status === 'checking' ? (
+          {status === 'checking' || status === 'restoring' ? (
             <div className={styles.checking} aria-live="polite">
               <span className={styles.spinner} />
-              <strong>{t.checking[checkingStep]}</strong>
-              <div><span style={{ width: `${34 + checkingStep * 30}%` }} /></div>
+              <strong>{status === 'restoring' ? t.restoring : t.checking[checkingStep]}</strong>
+              <div><span style={{ width: status === 'restoring' ? '72%' : `${34 + checkingStep * 30}%` }} /></div>
             </div>
           ) : status === 'approved' && result?.downloadUrl ? (
             <div className={styles.approved} role="status">

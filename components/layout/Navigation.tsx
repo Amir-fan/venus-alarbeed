@@ -19,6 +19,7 @@ export default function Navigation({ lang, d }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [hasBookAccess, setHasBookAccess] = useState(false);
   const otherLang = lang === 'en' ? 'ar' : 'en';
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
@@ -43,6 +44,25 @@ export default function Navigation({ lang, d }: Props) {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
+
+  useEffect(() => {
+    const syncBookAccess = () => {
+      try {
+        const saved = JSON.parse(window.localStorage.getItem('venus-book-access-v1') ?? '{}') as Record<string, unknown>;
+        setHasBookAccess(Boolean(saved.en || saved.ar));
+      } catch {
+        setHasBookAccess(false);
+      }
+    };
+
+    queueMicrotask(syncBookAccess);
+    window.addEventListener('storage', syncBookAccess);
+    window.addEventListener('venus-book-access-changed', syncBookAccess);
+    return () => {
+      window.removeEventListener('storage', syncBookAccess);
+      window.removeEventListener('venus-book-access-changed', syncBookAccess);
+    };
+  }, []);
 
   const links = [
     { href: `/${lang}/venus`, label: d.nav.venus },
@@ -90,6 +110,13 @@ export default function Navigation({ lang, d }: Props) {
 
           {/* Right controls */}
           <div className={styles.controls}>
+            {hasBookAccess && (
+              <Link href={`/${lang}/book#my-book`} className={styles.bookAccess}>
+                <span aria-hidden="true">◇</span>
+                {lang === 'ar' ? 'كتابي' : 'My Book'}
+              </Link>
+            )}
+
             {/* Search Bar */}
             <div className={styles.searchContainer}>
               <form action={searchAction} onSubmit={(event) => submitSearch(event, lang)} className={styles.searchForm} role="search">
@@ -183,6 +210,16 @@ export default function Navigation({ lang, d }: Props) {
         aria-hidden={!menuOpen}
       >
         <div className={styles.mobileInner}>
+          {hasBookAccess && (
+            <Link
+              href={`/${lang}/book#my-book`}
+              className={styles.mobileBookAccess}
+              onClick={() => setMenuOpen(false)}
+            >
+              <span aria-hidden="true">◇</span>
+              {lang === 'ar' ? 'كتابي' : 'My Book'}
+            </Link>
+          )}
           <form action={searchAction} onSubmit={(event) => submitSearch(event, lang)} className={styles.mobileSearch} role="search">
             <input
               type="search"

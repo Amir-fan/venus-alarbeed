@@ -76,6 +76,31 @@
   line-height: 1.8;
 }
 
+.myBook {
+  margin-top: var(--space-8);
+  padding: 0.78rem 1.2rem;
+  border: 1px solid rgba(201, 174, 114, 0.48);
+  border-radius: 9999px;
+  color: var(--gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background var(--dur-sm), color var(--dur-sm), transform var(--dur-sm);
+}
+
+.myBook:hover,
+.myBook:focus-visible {
+  background: var(--gold);
+  color: var(--navy);
+  transform: translateY(-2px);
+}
+
+[dir='rtl'] .myBook {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: 0.86rem;
+}
+
 .price {
   position: absolute;
   inset-inline-end: var(--space-20);

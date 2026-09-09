@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "checkout-server": "node server/index.mjs",
-    "test:receipt": "node --test server/receipt-parser.test.mjs"
+    "test:receipt": "node --test server/receipt-parser.test.mjs server/access-tokens.test.mjs"
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.8",

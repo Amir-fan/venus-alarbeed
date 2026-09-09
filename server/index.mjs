@@ -77,7 +77,7 @@ function signPayload(payload) {
   return `${encoded}.${signature}`;
 }
 
-function verifyToken(token) {
+function verifyToken(token, expectedType) {
   const [encoded, suppliedSignature] = String(token ?? '').split('.');
   if (!encoded || !suppliedSignature) return null;
   const expectedSignature = crypto.createHmac('sha256', getTokenSecret()).update(encoded).digest('base64url');
@@ -86,7 +86,39 @@ function verifyToken(token) {
   if (supplied.length !== expected.length || !crypto.timingSafeEqual(supplied, expected)) return null;
   const payload = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8'));
   if (!['en', 'ar'].includes(payload.edition) || !Number.isFinite(payload.exp) || payload.exp < Date.now()) return null;
+  if (payload.type !== expectedType) return null;
   return payload;
+}
+
+function publicServerUrl(request) {
+  return (process.env.PUBLIC_SERVER_URL ?? `${request.protocol}://${request.get('host')}`).replace(/\/$/, '');
+}
+
+function createBookLinks(request, entitlement) {
+  const ttlSeconds = Math.min(3600, Math.max(300, Number(process.env.BOOK_LINK_TTL_SECONDS ?? 1800)));
+  const token = signPayload({
+    type: 'book-link',
+    edition: entitlement.edition,
+    exp: Date.now() + ttlSeconds * 1000,
+    tx: entitlement.tx,
+    receipt: entitlement.receipt,
+  });
+  const baseUrl = publicServerUrl(request);
+  const bookUrl = `${baseUrl}/book/${entitlement.edition}?token=${encodeURIComponent(token)}`;
+  return {
+    readUrl: `${bookUrl}&mode=inline`,
+    downloadUrl: `${bookUrl}&mode=download`,
+    expiresIn: ttlSeconds,
+  };
+}
+
+function createAccessPass(entitlement) {
+  const days = Math.min(730, Math.max(1, Number(process.env.BOOK_ACCESS_TTL_DAYS ?? 365)));
+  const expiresAt = Date.now() + days * 24 * 60 * 60 * 1000;
+  return {
+    token: signPayload({ type: 'book-access', ...entitlement, exp: expiresAt }),
+    expiresAt,
+  };
 }
 
 function detectFileType(buffer) {
@@ -222,6 +254,7 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(cors({ origin: (origin, callback) => callback(null, !origin || allowedOrigins.includes(origin)), methods: ['GET', 'POST'] }));
+app.use(express.json({ limit: '8kb' }));
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -230,6 +263,33 @@ const upload = multer({
 
 app.get('/health', (_request, response) => {
   response.json({ ok: true, verifier: 'local-tesseract-ocr', database: false });
+});
+
+app.post('/refresh-book-access', (request, response) => {
+  const locale = request.body?.uiLanguage === 'ar' ? 'ar' : 'en';
+  try {
+    const entitlement = verifyToken(request.body?.accessPass, 'book-access');
+    if (!entitlement) {
+      return response.status(401).json({
+        approved: false,
+        reasonCode: 'access_expired',
+        message: locale === 'ar'
+          ? 'انتهت صلاحية الوصول المحفوظ. ارفع إيصال الدفع مرة أخرى لاستعادته.'
+          : 'Your saved access has expired. Upload the payment receipt again to restore it.',
+      });
+    }
+
+    return response.json({
+      approved: true,
+      restored: true,
+      message: locale === 'ar'
+        ? 'تمت استعادة نسختك المحفوظة.'
+        : 'Your saved book access has been restored.',
+      ...createBookLinks(request, entitlement),
+    });
+  } catch {
+    return response.status(401).json({ approved: false, reasonCode: 'access_expired' });
+  }
 });
 
 app.post('/verify-receipt', upload.single('receipt'), async (request, response) => {
@@ -287,18 +347,16 @@ app.post('/verify-receipt', upload.single('receipt'), async (request, response) 
       : receiptHash.slice(0, 24);
     const existing = usedTransactions.get(transactionKey);
     if (existing && existing.edition !== edition) return reply('duplicate_receipt', 409);
-    const ttlSeconds = Math.min(3600, Math.max(300, Number(process.env.BOOK_LINK_TTL_SECONDS ?? 1800)));
-    const expiresAt = Date.now() + ttlSeconds * 1000;
-    usedTransactions.set(transactionKey, { edition, receiptHash, expiresAt });
-    const token = signPayload({ edition, exp: expiresAt, tx: transactionKey, receipt: receiptHash.slice(0, 16) });
-    const publicServerUrl = (process.env.PUBLIC_SERVER_URL ?? `${request.protocol}://${request.get('host')}`).replace(/\/$/, '');
+    const entitlement = { edition, tx: transactionKey, receipt: receiptHash.slice(0, 16) };
+    const accessPass = createAccessPass(entitlement);
+    usedTransactions.set(transactionKey, { edition, receiptHash, expiresAt: accessPass.expiresAt });
 
     return response.json({
       approved: true,
       message: messages[locale].approved,
-      readUrl: `${publicServerUrl}/book/${edition}?token=${encodeURIComponent(token)}&mode=inline`,
-      downloadUrl: `${publicServerUrl}/book/${edition}?token=${encodeURIComponent(token)}&mode=download`,
-      expiresIn: ttlSeconds,
+      accessPass: accessPass.token,
+      accessExpiresAt: new Date(accessPass.expiresAt).toISOString(),
+      ...createBookLinks(request, entitlement),
       receipt: {
         transactionNumber: extracted.transactionNumber,
         amount: extracted.amount,
@@ -315,7 +373,7 @@ app.post('/verify-receipt', upload.single('receipt'), async (request, response) 
 
 app.get('/book/:edition', (request, response) => {
   try {
-    const payload = verifyToken(request.query.token);
+    const payload = verifyToken(request.query.token, 'book-link');
     if (!payload || payload.edition !== request.params.edition) return response.status(403).send('This book link is invalid or expired.');
     const bookPath = bookPaths[payload.edition];
     if (!fs.existsSync(bookPath)) return response.status(503).send('The book file is not installed on the server yet.');
@@ -341,7 +399,11 @@ app.use((error, _request, response, _next) => {
   return response.status(500).json({ approved: false, reasonCode: 'service_unavailable', message: messages.en.service_unavailable });
 });
 
-app.listen(port, () => {
-  getTokenSecret();
-  console.log(`Receipt server listening on port ${port}.`);
-});
+if (path.resolve(process.argv[1] ?? '') === fileURLToPath(import.meta.url)) {
+  app.listen(port, () => {
+    getTokenSecret();
+    console.log(`Receipt server listening on port ${port}.`);
+  });
+}
+
+export { createAccessPass, createBookLinks, signPayload, verifyToken };

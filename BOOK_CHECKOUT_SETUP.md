@@ -9,6 +9,7 @@ This version uses:
 - Local Tesseract OCR on the checkout server.
 - Deterministic receipt rules written in code.
 - Private PDF files that never enter `public/`, the Git repository, or the GitHub Pages artifact.
+- A signed browser access pass so a buyer can return without uploading the receipt again.
 
 ## What is checked
 
@@ -38,6 +39,8 @@ That folder is ignored by Git. Upload it directly to the private server or mount
 ## 2. Configure the receipt server
 
 Create `server/.env` from `server/.env.example`, then set a long random `BOOK_TOKEN_SECRET`. Load those environment variables through the hosting provider or the shell before starting the server.
+
+Keep `BOOK_TOKEN_SECRET` stable and private. Changing it immediately invalidates every buyer's saved access pass. `BOOK_ACCESS_TTL_DAYS` controls how long access is remembered and defaults to 365 days. The short read/download URLs still expire after 30 minutes and are refreshed from the saved pass whenever the buyer returns.
 
 The server needs Node.js 22.13 or newer and runs with:
 
@@ -82,10 +85,17 @@ Then test through the website with:
 - A receipt for a different recipient or account, which must be rejected.
 - An older receipt with all three required payment fields, which should still be accepted.
 - Both Read in browser and Download PDF after approval.
+- Close the tab, revisit the site, and use **My Book** to confirm that fresh links are created without another upload.
 - Direct access to `/book/en` or `/book/ar` without a signed token, which must return 403.
+
+## Returning buyers
+
+After a receipt is approved, the server creates a signed access pass for that edition. The website stores it only in that browser's local storage. On a later visit, the checkout page exchanges the pass through `/refresh-book-access` for fresh short-lived Read and Download links. A **My Book** shortcut appears in the navigation and on the book page while access is saved.
+
+There is no account and no database. Consequently, access does not automatically move to another browser or device. Clearing browser data also removes the saved pass; in either case, the buyer can upload the same valid receipt again to recover access to the same edition.
 
 ## Honest security boundary
 
 OCR can check what a receipt displays, but it cannot prove that Sham Cash actually completed the transfer. A convincingly edited receipt can pass unless Sham Cash provides a transaction-verification API.
 
-Because there is no database, used transaction numbers are remembered only in server memory and are lost when the process restarts. Multiple server instances do not share this memory. The signed reading/download link expires after 30 minutes by default, but a buyer can still share the downloaded PDF. These are unavoidable limitations of the requested no-database, no-payment-API design.
+Because there is no database, used transaction numbers are remembered only in server memory and are lost when the process restarts. Multiple server instances do not share this memory. The browser access pass lasts 365 days by default; its fresh reading/download links expire after 30 minutes. A buyer can still share the pass or downloaded PDF. These are unavoidable limitations of the requested no-database, no-payment-API design.
