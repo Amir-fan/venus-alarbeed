@@ -184,3 +184,16 @@
   color: var(--navy);
   border-color: rgba(17, 28, 45, 0.3);
 }
+
+.amazonBtn {
+  color: var(--ivory);
+  background: var(--navy);
+  border-color: var(--navy);
+}
+
+.amazonBtn:hover,
+.amazonBtn:focus-visible {
+  color: var(--navy);
+  background: var(--gold);
+  border-color: var(--gold);
+}

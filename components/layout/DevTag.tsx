@@ -1,25 +1,37 @@
 'use client';
 
 import { useState } from 'react';
+import type { Locale } from '@/lib/i18n';
 import FanariPopup from './FanariPopup';
 import styles from './Footer.module.css';
 
-export default function DevTag() {
+interface Props {
+  lang: Locale;
+}
+
+export default function DevTag({ lang }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const isAr = lang === 'ar';
 
   return (
     <>
-      <button 
-        onClick={() => setIsOpen(true)} 
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
         className={styles.devTag}
-        aria-label="Contact Developer (Fanari Labs)"
+        aria-haspopup="dialog"
+        aria-label={isAr ? 'تواصل مع مطوّر الموقع، فناري لابس' : 'Contact the website developer, Fanari Labs'}
       >
+        <span className={styles.devTagPulse} aria-hidden="true" />
         <span className={styles.devTagLabel}>
-          Developed by <span className={styles.devTagBrand}>Fanari Labs</span> &nbsp;&bull;&nbsp; Click to contact
+          {isAr ? 'طُوّر بواسطة' : 'Developed by'}{' '}
+          <span className={styles.devTagBrand}>{isAr ? 'فناري لابس' : 'Fanari Labs'}</span>
+          <span className={styles.devTagDivider} aria-hidden="true" />
+          <span>{isAr ? 'اضغط للتواصل' : 'Click to contact'}</span>
         </span>
-        <div className={styles.devTagGlow} aria-hidden="true" />
+        <span className={styles.devTagArrow} aria-hidden="true">↗</span>
       </button>
-      <FanariPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <FanariPopup lang={lang} isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 }

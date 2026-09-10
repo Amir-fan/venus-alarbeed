@@ -2,187 +2,238 @@
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: fadeIn 300ms ease-out forwards;
-  padding: 16px;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(3, 5, 8, 0.76);
+  backdrop-filter: blur(14px);
+  animation: overlayIn 240ms ease-out both;
 }
 
 .popup {
   position: relative;
-  width: 100%;
-  max-width: 520px;
-  background-color: #050505; /* Deep black/gray */
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  animation: slideUp 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  width: min(100%, 520px);
+  max-height: min(740px, calc(100dvh - 2rem));
+  overflow: auto;
+  color: #f8f8f6;
+  background: #050607;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.58), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  font-family: var(--font-en), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  animation: popupIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.popup[dir='rtl'] {
+  font-family: var(--font-ar), sans-serif;
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* Background Grid */
 .grid {
   position: absolute;
   inset: 0;
-  background-image: 
-    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: center top;
-  z-index: 0;
   pointer-events: none;
-  mask-image: radial-gradient(ellipse at top center, black 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at top center, black 0%, transparent 70%);
+  opacity: 0.16;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.4) 0.7px, transparent 0.7px);
+  background-size: 26px 26px;
+  mask-image: linear-gradient(to bottom, #000, transparent 82%);
+}
+
+.glow {
+  position: absolute;
+  width: 300px;
+  height: 180px;
+  top: -130px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: rgba(201, 174, 114, 0.22);
+  filter: blur(70px);
+  border-radius: 50%;
 }
 
 .closeBtn {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255,255,255,0.6);
-  width: 32px;
-  height: 32px;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  z-index: 20;
-  transition: all 0.2s;
+  transition: color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
-.closeBtn:hover {
+.closeBtn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.closeBtn:hover,
+.closeBtn:focus-visible {
+  color: #fff;
   background: rgba(255, 255, 255, 0.1);
-  color: white;
-  transform: scale(1.05);
+  transform: rotate(4deg);
 }
 
-/* Content */
 .content {
   position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  padding: 40px 32px 32px;
+  z-index: 2;
+  padding: clamp(3.3rem, 8vw, 4.5rem) clamp(1.5rem, 6vw, 3rem) clamp(1.7rem, 6vw, 3rem);
+  text-align: center;
 }
 
 .logo {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  margin-bottom: 32px;
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
+  margin-bottom: 1.05rem;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.075em;
+  line-height: 1;
+  direction: ltr;
 }
 
-.logoSub {
-  font-size: 10px;
+.logo span {
+  margin-left: 0.12rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.78rem;
   font-weight: 400;
-  letter-spacing: 0.1em;
-  opacity: 0.7;
-  margin-left: 2px;
+  letter-spacing: -0.025em;
 }
 
 .title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  margin-bottom: 16px;
-}
-
-.titleGray {
-  color: #a1a1aa; /* Zinc 400 */
+  margin: 0 auto 0.55rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(1rem, 2.5vw, 1.16rem);
+  font-weight: 550;
+  line-height: 1.55;
 }
 
 .body {
-  font-size: 1rem;
-  color: #a1a1aa;
-  line-height: 1.5;
-  margin-bottom: 32px;
+  max-width: 39ch;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.9rem;
+  line-height: 1.75;
 }
 
-.actions {
+.popup[dir='rtl'] .body {
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.contacts {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: clamp(2rem, 6vw, 3rem);
+}
+
+.contactCard {
+  min-height: 74px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 32px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 0.75rem 0.85rem 0.75rem 1.35rem;
+  color: #fff;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 13px;
+  direction: ltr;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), background 180ms ease, border-color 180ms ease;
 }
 
-.primaryBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 12px 20px;
-  border-radius: 20px;
-  font-size: 12px;
+.popup[dir='rtl'] .contactCard {
+  padding-inline: 1.35rem 0.85rem;
+}
+
+.contactCard:hover,
+.contactCard:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.085);
+  border-color: rgba(201, 174, 114, 0.34);
+}
+
+.contactText {
+  font-size: clamp(0.92rem, 3vw, 1rem);
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  transition: all 0.2s;
+  letter-spacing: 0.015em;
 }
 
-.primaryBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
+.contactIcon {
+  width: 43px;
+  height: 43px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.62);
+  background: rgba(0, 0, 0, 0.54);
+  border-radius: 50%;
+  transition: color 180ms ease, background 180ms ease;
 }
 
-.secondaryBtn {
-  display: inline-flex;
-  align-items: center;
-  background: white;
-  color: black;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  transition: transform 0.2s;
+.contactIcon svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.secondaryBtn:hover {
-  transform: scale(1.03);
+.contactCard:hover .contactIcon,
+.contactCard:focus-visible .contactIcon {
+  color: var(--gold);
+  background: rgba(201, 174, 114, 0.09);
 }
 
-.contactInfo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.contactInfo a {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  transition: color 0.2s;
+@keyframes popupIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.975); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.contactInfo a:hover {
-  color: white;
+@media (max-width: 460px) {
+  .overlay {
+    align-items: end;
+    padding: 0.65rem;
+  }
+
+  .popup {
+    border-radius: 24px;
+  }
+
+  .content {
+    padding-inline: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .contactCard {
+    min-height: 66px;
+    padding-inline: 1rem 0.65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .popup {
+    animation: none;
+  }
 }

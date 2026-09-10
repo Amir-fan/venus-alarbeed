@@ -235,6 +235,84 @@
   background: var(--gold-dim);
 }
 
+.amazonOption {
+  max-width: 820px;
+  margin-top: var(--space-6);
+  padding: 1rem 1.1rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-5);
+  color: var(--navy);
+  background: rgba(255, 255, 255, 0.48);
+  border: 1px solid rgba(17, 28, 45, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 14px 35px rgba(17, 28, 45, 0.055);
+}
+
+.amazonMark {
+  min-width: 72px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  padding-inline: 0.8rem;
+  color: var(--ivory);
+  background: var(--navy);
+  border-radius: 999px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.amazonCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.amazonCopy small {
+  color: var(--gold-dim);
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+[dir='rtl'] .amazonCopy small {
+  letter-spacing: 0;
+}
+
+.amazonCopy strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.amazonCopy p {
+  color: rgba(17, 28, 45, 0.58);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.amazonOption > a {
+  padding: 0.72rem 1rem;
+  color: var(--navy);
+  border: 1px solid rgba(17, 28, 45, 0.24);
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color var(--dur-sm), background var(--dur-sm), border-color var(--dur-sm), transform var(--dur-sm);
+}
+
+.amazonOption > a:hover,
+.amazonOption > a:focus-visible {
+  color: var(--ivory);
+  background: var(--navy);
+  border-color: var(--navy);
+  transform: translateY(-1px);
+}
+
 .paymentGrid {
   display: grid;
   grid-template-columns: minmax(240px, 360px) 1fr;
@@ -563,6 +641,16 @@
   .cover {
     width: 78px;
     height: 110px;
+  }
+
+  .amazonOption {
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4);
+  }
+
+  .amazonOption > a {
+    grid-column: 1 / -1;
+    text-align: center;
   }
 
   .paymentDetails dl > div {
