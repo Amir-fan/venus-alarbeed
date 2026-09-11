@@ -8,6 +8,7 @@ import CDPractice from '@/components/cd/CDPractice';
 import CDBook from '@/components/cd/CDBook';
 import CDElaraTransition from '@/components/cd/CDElaraTransition';
 import styles from './page.module.css';
+import { localizedPageMetadata } from '@/lib/seo';
 
 interface Props {
   params: Promise<{ lang: string }>;
@@ -16,10 +17,12 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { lang } = (await params) as { lang: Locale };
   const d = dict[lang];
-  return {
+  return localizedPageMetadata({
+    lang,
+    path: '/conscious-diplomacy',
     title: d.cd.label,
     description: d.cd.body,
-  };
+  });
 }
 
 export default async function ConsciousDiplomacyPage({ params }: Props) {

@@ -7,6 +7,7 @@ import VenusWriterSpeaker from '@/components/venus/VenusWriterSpeaker';
 import VenusThreeWorlds from '@/components/venus/VenusThreeWorlds';
 import VenusClosingStatement from '@/components/venus/VenusClosingStatement';
 import ContactSection from '@/components/home/ContactSection';
+import { localizedPageMetadata } from '@/lib/seo';
 
 interface Props {
   params: Promise<{ lang: string }>;
@@ -15,10 +16,12 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { lang } = (await params) as { lang: Locale };
   const d = dict[lang];
-  return {
-    title: `${d.hero.nameFirst} ${d.hero.nameLast}`,
+  return localizedPageMetadata({
+    lang,
+    path: '/venus',
+    title: lang === 'ar' ? 'عن فينوس العربيد' : 'About Venus Alarbeed',
     description: d.venus.body,
-  };
+  });
 }
 
 export default async function VenusPage({ params }: Props) {

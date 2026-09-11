@@ -4,6 +4,7 @@ import NewRayWidening from '@/components/newray/NewRayWidening';
 import NewRayRelationship from '@/components/newray/NewRayRelationship';
 import NewRayTransition from '@/components/newray/NewRayTransition';
 import styles from './page.module.css';
+import { localizedPageMetadata } from '@/lib/seo';
 
 interface Props {
   params: Promise<{ lang: string }>;
@@ -12,10 +13,12 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { lang } = (await params) as { lang: Locale };
   const d = dict[lang];
-  return {
+  return localizedPageMetadata({
+    lang,
+    path: '/the-new-ray',
     title: d.newray.label,
     description: d.newray.body,
-  };
+  });
 }
 
 export default async function TheNewRayPage({ params }: Props) {
