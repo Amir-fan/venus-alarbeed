@@ -34,7 +34,10 @@ interface VerificationResponse {
 }
 
 const SHAM_CASH_ADDRESS = '6ee6937181709f3f0b3b2e6adb0b415c';
-const AMAZON_BOOK_URL = 'https://a.co/d/0fOKbNfn';
+const AMAZON_BOOK_URLS: Record<Locale, string> = {
+  en: 'https://a.co/d/0fOKbNfn',
+  ar: 'https://a.co/d/01J0TgH2',
+};
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
 const ACCESS_STORAGE_KEY = 'venus-book-access-v1';
 const VERIFICATION_ENDPOINT = process.env.NEXT_PUBLIC_RECEIPT_VERIFY_URL || '/api/verify-receipt';
@@ -76,7 +79,8 @@ const copy = {
     pages: 'pages',
     amazonLabel: 'Also available',
     amazonTitle: 'Prefer to buy through Amazon?',
-    amazonBody: 'The English edition is available directly from Amazon.',
+    amazonBodyEnglish: 'The English edition is available directly from Amazon.',
+    amazonBodyArabic: 'The Arabic edition is available directly from Amazon.',
     amazonCta: 'View on Amazon',
     payment: '02 — Make the payment',
     scan: 'Scan in Sham Cash',
@@ -119,7 +123,8 @@ const copy = {
     pages: 'صفحة',
     amazonLabel: 'متوفر أيضاً',
     amazonTitle: 'تفضّل الشراء عبر أمازون؟',
-    amazonBody: 'النسخة الإنجليزية متاحة للشراء مباشرة عبر أمازون.',
+    amazonBodyEnglish: 'النسخة الإنجليزية متاحة للشراء مباشرة عبر أمازون.',
+    amazonBodyArabic: 'النسخة العربية متاحة للشراء مباشرة عبر أمازون.',
     amazonCta: 'عرض على أمازون',
     payment: '02 — أرسل المبلغ',
     scan: 'امسح الرمز في شام كاش',
@@ -354,19 +359,17 @@ export default function BookCheckout({ lang, d }: Props) {
               </label>
             ))}
           </div>
-          {edition === 'en' && (
-            <aside className={styles.amazonOption} aria-label={t.amazonTitle}>
-              <span className={styles.amazonMark}>amazon</span>
-              <div className={styles.amazonCopy}>
-                <small>{t.amazonLabel}</small>
-                <strong>{t.amazonTitle}</strong>
-                <p>{t.amazonBody}</p>
-              </div>
-              <a href={AMAZON_BOOK_URL} target="_blank" rel="noopener noreferrer">
-                {t.amazonCta} ↗
-              </a>
-            </aside>
-          )}
+          <aside className={styles.amazonOption} aria-label={t.amazonTitle}>
+            <span className={styles.amazonMark}>amazon</span>
+            <div className={styles.amazonCopy}>
+              <small>{t.amazonLabel}</small>
+              <strong>{t.amazonTitle}</strong>
+              <p>{edition === 'ar' ? t.amazonBodyArabic : t.amazonBodyEnglish}</p>
+            </div>
+            <a href={AMAZON_BOOK_URLS[edition]} target="_blank" rel="noopener noreferrer">
+              {t.amazonCta} ↗
+            </a>
+          </aside>
         </section>
 
         <section className={styles.section} aria-labelledby="payment-heading">

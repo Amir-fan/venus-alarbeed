@@ -5,7 +5,10 @@ import type { Locale, Dict } from '@/lib/i18n';
 import { useRevealGroup } from '@/hooks/useReveal';
 import styles from './TheBook.module.css';
 
-const AMAZON_BOOK_URL = 'https://a.co/d/0fOKbNfn';
+const AMAZON_BOOK_URLS: Record<Locale, string> = {
+  en: 'https://a.co/d/0fOKbNfn',
+  ar: 'https://a.co/d/01J0TgH2',
+};
 
 interface Props {
   lang: Locale;
@@ -59,12 +62,12 @@ export default function TheBook({ lang, d }: Props) {
                 {d.book.ctaBuy} →
               </Link>
               <a
-                href={AMAZON_BOOK_URL}
+                href={AMAZON_BOOK_URLS[lang]}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`btn ${styles.amazonBtn}`}
               >
-                {lang === 'ar' ? 'النسخة الإنجليزية على أمازون' : 'English edition on Amazon'} ↗
+                {lang === 'ar' ? 'النسخة العربية على أمازون' : 'English edition on Amazon'} ↗
               </a>
             </div>
           </div>
