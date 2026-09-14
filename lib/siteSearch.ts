@@ -64,6 +64,18 @@ export function getSearchEntries(lang: Locale): SearchEntry[] {
       d.programs.heading,
       d.programs.list.flatMap(({ title, tag }) => [title, tag]),
     ]),
+    entry(
+      '/programs/conscious-diplomacy-code',
+      lang === 'ar' ? 'شفرة الدبلوماسية الواعية' : 'The Conscious Diplomacy Code',
+      lang === 'ar'
+        ? '12 جلسة قصيرة إلى طريقة مختلفة في رؤية الإنسان، الغرفة، القوة والتأثير.'
+        : '12 short sessions exploring a different way to see the human being, the room, power and influence.',
+      [
+        'course registration online 12 sessions presence negotiation power reading the room',
+        'كورس تسجيل أونلاين 12 جلسة الحضور التفاوض القوة قراءة الغرفة',
+      ],
+      lang === 'ar' ? 'كورس' : 'Course',
+    ),
     entry('/library', d.nav.library, d.library.body, [
       d.library.heading,
       d.library.articles,
@@ -76,6 +88,18 @@ export function getSearchEntries(lang: Locale): SearchEntry[] {
       d.book.body,
       d.notes.sampleNotes.map(({ text }) => text),
     ]),
+    entry(
+      '/library/art-of-identification',
+      lang === 'ar' ? 'فنّ التماهي' : 'The Art of Identification',
+      lang === 'ar'
+        ? 'هناك كذبة نعرفها جميعاً، وأخرى نعيش داخلها دون أن نسميها كذباً.'
+        : 'There is one lie we all recognize, and another we live inside without ever naming it as a lie.',
+      [
+        'essay politics truth discourse institutions peace justice diplomacy',
+        'مقال السياسة الحقيقة الخطاب المؤسسات السلام العدالة الدبلوماسية',
+      ],
+      lang === 'ar' ? 'مقال' : 'Essay',
+    ),
     entry('/book', d.book.title, d.book.body, [
       d.book.label,
       d.book.ctaBuy,

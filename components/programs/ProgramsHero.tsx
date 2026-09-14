@@ -23,7 +23,7 @@ export default function ProgramsHero({ d }: Props) {
             <span>{d.programs.label}</span>
           </div>
           <span className={`quiet-reveal ${styles.count}`}>
-            {isAr ? '٠٤ برامج' : '04 PROGRAMS'}
+            {isAr ? '٠٥ برامج' : '05 PROGRAMS'}
           </span>
         </div>
 

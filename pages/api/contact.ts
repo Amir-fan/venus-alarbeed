@@ -16,10 +16,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, reason = 'Waitlist', message = '' } = req.body ?? {};
+  const { name, email, reason = 'Website contact', message = '', website = '' } = req.body ?? {};
 
-  if (!name || !email) {
+  // Quietly accept bot-filled honeypot submissions without sending an email.
+  if (website) {
+    return res.status(200).json({ success: true });
+  }
+
+  const normalizedName = String(name ?? '').trim();
+  const normalizedEmail = String(email ?? '').trim();
+  const normalizedReason = String(reason ?? '').trim();
+  const normalizedMessage = String(message ?? '').trim();
+
+  if (!normalizedName || !normalizedEmail) {
     return res.status(400).json({ error: 'Name and email are required' });
+  }
+
+  if (
+    normalizedName.length > 120 ||
+    normalizedEmail.length > 180 ||
+    normalizedReason.length > 160 ||
+    normalizedMessage.length > 4000 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)
+  ) {
+    return res.status(400).json({ error: 'Invalid submission' });
   }
 
   if (!process.env.RESEND_API_KEY) {
@@ -28,17 +48,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const safeName = escapeHtml(name);
-    const safeEmail = escapeHtml(email);
-    const safeReason = escapeHtml(reason);
-    const safeMessage = escapeHtml(message).replaceAll('\n', '<br/>');
+    const safeName = escapeHtml(normalizedName);
+    const safeEmail = escapeHtml(normalizedEmail);
+    const safeReason = escapeHtml(normalizedReason);
+    const safeMessage = escapeHtml(normalizedMessage).replaceAll('\n', '<br/>');
 
     const { data, error } = await resend.emails.send({
       from: 'Venus Alarbeed <onboarding@resend.dev>',
       to: process.env.CONTACT_EMAIL || 'venus.alarbeed.support@gmail.com',
-      subject: `New submission from ${String(name).slice(0, 120)} — ${String(reason).slice(0, 120)}`,
+      replyTo: normalizedEmail,
+      subject: `New submission from ${normalizedName} — ${normalizedReason}`,
       html: `
-        <h2>New Contact Form Submission</h2>
+        <h2>New Website Submission</h2>
         <p><strong>Name:</strong> ${safeName}</p>
         <p><strong>Email:</strong> ${safeEmail}</p>
         <p><strong>Reason:</strong> ${safeReason}</p>
