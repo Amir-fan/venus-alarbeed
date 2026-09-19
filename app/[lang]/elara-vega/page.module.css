@@ -11,10 +11,11 @@
 ══════════════════════════════════════════ */
 .hero {
   position: relative;
-  min-height: 100svh;
+  min-height: 110svh;
   display: flex;
   align-items: center;
   overflow: hidden;
+  padding-bottom: clamp(10rem, 21vw, 18rem);
 }
 
 /* The Orb — large, luminous, positioned top-right like a rising celestial body */
@@ -127,6 +128,56 @@
   margin: 0;
 }
 
+.heroMap {
+  position: absolute;
+  z-index: 2;
+  inset-inline-end: clamp(1.5rem, 5vw, 5rem);
+  bottom: clamp(2rem, 5vw, 4rem);
+  width: min(66vw, 920px);
+  margin: 0;
+}
+
+.heroMap::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+  border: 1px solid rgba(201, 174, 114, 0.3);
+  pointer-events: none;
+}
+
+.heroMap img {
+  width: 100%;
+  height: auto;
+  opacity: 0.78;
+  filter: saturate(0.88) contrast(1.05);
+}
+
+.heroMap figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-8);
+  margin-top: var(--space-3);
+  color: var(--ivory);
+}
+
+.heroMap figcaption span {
+  flex-shrink: 0;
+  color: var(--gold);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+}
+
+.heroMap figcaption p {
+  max-width: 44ch;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  opacity: 0.42;
+  text-align: end;
+}
+
 [dir="rtl"] .heroBody {
   font-family: var(--font-ar);
   font-size: 1.125rem;
@@ -231,6 +282,193 @@
   letter-spacing: -0.01em;
 }
 
+.cinematicFrame {
+  position: relative;
+  margin: var(--space-20) 0 0;
+  border: 1px solid rgba(201, 174, 114, 0.18);
+  overflow: hidden;
+}
+
+.cinematicFrame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(5, 12, 24, 0.88) 100%);
+  pointer-events: none;
+}
+
+.cinematicFrame img {
+  width: 100%;
+  height: auto;
+  transition: transform 900ms var(--ease-silk), filter 600ms var(--ease-out);
+}
+
+.cinematicFrame:hover img {
+  transform: scale(1.015);
+  filter: saturate(1.08);
+}
+
+.cinematicFrame figcaption {
+  position: absolute;
+  z-index: 1;
+  inset-inline: clamp(1.25rem, 4vw, 3rem);
+  bottom: clamp(1.25rem, 4vw, 3rem);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.cinematicFrame figcaption span {
+  color: var(--gold);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+.cinematicFrame figcaption p {
+  max-width: 42ch;
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  line-height: 1.35;
+  text-align: end;
+}
+
+[dir="rtl"] .cinematicFrame figcaption p {
+  font-family: var(--font-ar);
+  line-height: 1.65;
+}
+
+/* ══════════════════════════════════════════
+   CITY ATLAS
+══════════════════════════════════════════ */
+.atlasSection {
+  position: relative;
+  padding-block: var(--space-24) var(--space-32);
+  background: #07101f;
+  border-top: 1px solid rgba(201, 174, 114, 0.08);
+}
+
+.atlasHeading,
+.frontierHeading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-16);
+}
+
+.atlasHeading > span,
+.frontierHeading > span {
+  color: var(--gold);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.atlasHeading h2,
+.frontierHeading h2 {
+  max-width: 15ch;
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+}
+
+[dir="rtl"] .atlasHeading h2,
+[dir="rtl"] .frontierHeading h2 {
+  font-family: var(--font-ar);
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.atlasHeading > p,
+.frontierHeading > p {
+  max-width: 48ch;
+  color: rgba(245, 242, 234, 0.5);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.atlasGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 2rem);
+  align-items: start;
+}
+
+.atlasCard {
+  min-width: 0;
+  margin: 0;
+}
+
+.atlasCard:nth-child(2) {
+  margin-top: clamp(0rem, 8vw, 7rem);
+}
+
+.atlasImage {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(201, 174, 114, 0.22);
+  background: #030711;
+}
+
+.atlasImage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+}
+
+.atlasImage img {
+  width: 100%;
+  height: auto;
+  transition: transform 800ms var(--ease-silk), filter 500ms var(--ease-out);
+}
+
+.atlasCard:hover .atlasImage img {
+  transform: scale(1.025);
+  filter: saturate(1.12);
+}
+
+.atlasCard figcaption {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+}
+
+.atlasCard figcaption > span {
+  padding-top: 0.35rem;
+  color: var(--gold);
+  font-size: 0.5625rem;
+  opacity: 0.5;
+}
+
+.atlasCard h3,
+.frontierCard h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 400;
+}
+
+[dir="rtl"] .atlasCard h3,
+[dir="rtl"] .frontierCard h3 {
+  font-family: var(--font-ar);
+}
+
+.atlasCard figcaption p,
+.frontierCard figcaption p {
+  margin-top: var(--space-2);
+  color: rgba(245, 242, 234, 0.4);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+}
+
 [dir="rtl"] .transTo {
   font-family: var(--font-ar);
   font-size: clamp(1rem, 2.2vw, 1.5rem);
@@ -269,6 +507,86 @@
   display: flex;
   flex-direction: column;
   border-top: 1px solid rgba(245, 242, 234, 0.06);
+}
+
+.chapterVisual {
+  position: relative;
+  margin: var(--space-16) 0;
+  border: 1px solid rgba(201, 174, 114, 0.16);
+  background: #030813;
+  overflow: hidden;
+}
+
+.chapterImage {
+  position: relative;
+  overflow: hidden;
+}
+
+.chapterImage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 55%, rgba(3, 8, 19, 0.8));
+}
+
+.chapterVisual img {
+  width: 100%;
+  height: auto;
+  transition: transform 900ms var(--ease-silk);
+}
+
+.chapterVisual:hover img {
+  transform: scale(1.018);
+}
+
+.chapterVisual figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-6);
+}
+
+.chapterVisual figcaption span {
+  color: var(--gold);
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  opacity: 0.6;
+}
+
+.chapterVisual figcaption p {
+  max-width: 46ch;
+  color: rgba(245, 242, 234, 0.58);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  text-align: end;
+}
+
+.chapterPortrait {
+  display: grid;
+  grid-template-columns: minmax(0, 0.68fr) minmax(14rem, 0.32fr);
+  align-items: end;
+}
+
+.chapterPortrait figcaption {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.chapterPortrait figcaption p {
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.45;
+  text-align: start;
+}
+
+[dir="rtl"] .chapterPortrait figcaption p {
+  font-family: var(--font-ar);
+  line-height: 1.8;
 }
 
 .stageRow {
@@ -376,6 +694,52 @@
   transition: opacity 300ms var(--ease-out);
 }
 
+/* ══════════════════════════════════════════
+   THE FRONTIER
+══════════════════════════════════════════ */
+.frontierSection {
+  padding-block: var(--space-24) var(--space-32);
+  background: #030812;
+  border-top: 1px solid rgba(201, 174, 114, 0.1);
+}
+
+.frontierGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(201, 174, 114, 0.13);
+  border: 1px solid rgba(201, 174, 114, 0.13);
+}
+
+.frontierCard {
+  min-width: 0;
+  background: #050c18;
+  overflow: hidden;
+}
+
+.frontierCard > img {
+  width: 100%;
+  height: auto;
+  transition: transform 800ms var(--ease-silk), opacity 500ms var(--ease-out);
+}
+
+.frontierCard:hover > img {
+  transform: scale(1.025);
+  opacity: 0.88;
+}
+
+.frontierCard figcaption {
+  padding: var(--space-6);
+}
+
+.frontierCard figcaption > span {
+  display: block;
+  margin-bottom: var(--space-4);
+  color: var(--gold);
+  font-size: 0.5625rem;
+  opacity: 0.5;
+}
+
 .stageRow:hover .stagePulse {
   opacity: 0.6;
 }
@@ -389,5 +753,129 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (min-width: 900px) {
+  .atlasHeading,
+  .frontierHeading {
+    grid-template-columns: minmax(0, 0.9fr) minmax(18rem, 0.45fr);
+    column-gap: var(--space-16);
+    align-items: end;
+  }
+
+  .atlasHeading > span,
+  .frontierHeading > span {
+    grid-column: 1 / -1;
+  }
+
+  .atlasHeading > p,
+  .frontierHeading > p {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 899px) {
+  .hero {
+    min-height: auto;
+    display: block;
+    padding-bottom: var(--space-16);
+  }
+
+  .heroContent {
+    max-width: none;
+    margin-inline: 0;
+    padding: 10rem var(--space-6) var(--space-16);
+  }
+
+  .heroMap {
+    position: relative;
+    inset: auto;
+    width: calc(100% - 2 * var(--space-6));
+    margin-inline: var(--space-6);
+  }
+
+  .heroMap figcaption {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .heroMap figcaption p {
+    text-align: start;
+  }
+
+  .atlasGrid,
+  .frontierGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .atlasCard:nth-child(2) {
+    margin-top: var(--space-16);
+  }
+
+  .atlasCard:last-child,
+  .frontierCard:last-child {
+    grid-column: 1 / -1;
+    width: min(100%, 30rem);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .cinematicFrame figcaption {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .cinematicFrame figcaption p {
+    font-size: 0.875rem;
+    text-align: start;
+  }
+
+  .atlasGrid,
+  .frontierGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    background: transparent;
+    border: 0;
+  }
+
+  .atlasCard:nth-child(2) {
+    margin-top: 0;
+  }
+
+  .atlasCard:last-child,
+  .frontierCard:last-child {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .frontierCard {
+    border: 1px solid rgba(201, 174, 114, 0.13);
+  }
+
+  .chapterPortrait {
+    display: block;
+  }
+
+  .chapterVisual figcaption {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .chapterVisual figcaption p {
+    text-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinematicFrame img,
+  .atlasImage img,
+  .chapterVisual img,
+  .frontierCard > img {
+    transition: none;
   }
 }

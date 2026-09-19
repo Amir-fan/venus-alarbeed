@@ -90,6 +90,7 @@ export default async function LangLayout({
           'https://www.instagram.com/venus.alarbeed',
           'https://www.facebook.com/venus.alarbeed',
           'https://www.linkedin.com/in/venus-alarbeed',
+          'https://youtube.com/@venusalarbeed936',
         ],
       },
     ],

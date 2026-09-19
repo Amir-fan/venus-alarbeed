@@ -100,6 +100,18 @@ export function getSearchEntries(lang: Locale): SearchEntry[] {
       ],
       lang === 'ar' ? 'مقال' : 'Essay',
     ),
+    entry(
+      '/library/reels',
+      lang === 'ar' ? 'ريلز فينوس العربيد' : 'Venus Alarbeed Reels',
+      lang === 'ar'
+        ? 'تأملات بصرية قصيرة حول الحضور والقوة والتفاوض والإنسان داخل الغرفة الدبلوماسية.'
+        : 'Short visual reflections on presence, power, negotiation and the human being inside the diplomatic room.',
+      [
+        'reels videos watch YouTube Venus Alarbeed conscious diplomacy presence negotiation',
+        'ريلز فيديو يوتيوب فينوس العربيد الدبلوماسية الواعية الحضور التفاوض',
+      ],
+      lang === 'ar' ? 'شاهد' : 'Watch',
+    ),
     entry('/book', d.book.title, d.book.body, [
       d.book.label,
       d.book.ctaBuy,

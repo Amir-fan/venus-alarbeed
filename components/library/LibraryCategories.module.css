@@ -82,6 +82,7 @@
   cursor: pointer;
   color: var(--navy);
   text-align: left;
+  text-decoration: none;
 }
 
 [dir="rtl"] .itemBtn {

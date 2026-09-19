@@ -11,6 +11,7 @@ const routes = [
   { path: '/programs', priority: 0.8 },
   { path: '/programs/conscious-diplomacy-code', priority: 0.9 },
   { path: '/library', priority: 0.8 },
+  { path: '/library/reels', priority: 0.8 },
   { path: '/library/art-of-identification', priority: 0.8 },
   { path: '/book', priority: 0.8 },
   { path: '/contact', priority: 0.6 },

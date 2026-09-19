@@ -1,14 +1,16 @@
 'use client';
 
-import type { Dict } from '@/lib/i18n';
+import Link from 'next/link';
+import type { Dict, Locale } from '@/lib/i18n';
 import { useRevealGroup } from '@/hooks/useReveal';
 import styles from './LibraryCategories.module.css';
 
 interface Props {
   d: Dict;
+  lang: Locale;
 }
 
-export default function LibraryCategories({ d }: Props) {
+export default function LibraryCategories({ d, lang }: Props) {
   const ref = useRevealGroup<HTMLElement>();
 
   const sections = [
@@ -41,10 +43,17 @@ export default function LibraryCategories({ d }: Props) {
               <ul className={styles.itemList}>
                 {section.items.map((item) => (
                   <li key={item} className={styles.item}>
-                    <button className={styles.itemBtn}>
-                      <span className={styles.itemText}>{item}</span>
-                      <span className={styles.itemArrow} aria-hidden="true">→</span>
-                    </button>
+                    {item === d.library.reels ? (
+                      <Link href={`/${lang}/library/reels`} className={styles.itemBtn}>
+                        <span className={styles.itemText}>{item}</span>
+                        <span className={styles.itemArrow} aria-hidden="true">→</span>
+                      </Link>
+                    ) : (
+                      <button className={styles.itemBtn} type="button">
+                        <span className={styles.itemText}>{item}</span>
+                        <span className={styles.itemArrow} aria-hidden="true">→</span>
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
